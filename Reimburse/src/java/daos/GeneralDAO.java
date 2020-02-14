@@ -11,60 +11,46 @@ import org.hibernate.Transaction;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Query;
-import java.lang.reflect.Field;
+import org.hibernate.HibernateException;
 
 /**
  *
- * @author aqira
+ * @author yuyun
+ * @param <T> is class models
  */
 public class GeneralDAO<T> {
 
-    private Session session;
-    private Transaction transaction;
-    private SessionFactory sessionFactory;
+    Session session;
+    Transaction transaction;
+    SessionFactory sessionFactory;
     private T t;
 
     public GeneralDAO(SessionFactory sessionFactory, Class<T> t) {
         try {
             this.sessionFactory = sessionFactory;
             this.t = t.newInstance();
-        } catch (Exception e) {
+        } catch (IllegalAccessException | InstantiationException e) {
             e.printStackTrace();
         }
     }
 
-  
-    public List<T> getData(Object key) {
+    
+    public List<T> getAll() {
         List<T> ts = new ArrayList<>();
         session = this.sessionFactory.openSession();
         transaction = session.beginTransaction();
         try {
-//            Method GetAll
-            String hql = "FROM " + t.getClass().getSimpleName() + (key == null ? "   " : " WHERE ");
-//            
-            for (Field field : t.getClass().getDeclaredFields()) {
-                System.out.println(field.getName());
-                if (!field.getName().matches(".*(List|UID)") && key != null) {
-                    hql = hql + "LOWER(" + field.getName() + ") LIKE '%" + key + "%' OR ";
-                }
-            }
-//            Menghilangkan OR dengan Substring
-            hql = hql.substring(0, hql.length() - 3);
-            System.out.println(hql);
-            Query query = session.createQuery(hql);
-            ts = query.list();
+            ts = session.createQuery("FROM " + t.getClass().getSimpleName() +" Order By 1").list();
+            transaction.commit();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();
             }
-        } finally {
-            session.close();
         }
         return ts;
     }
-
-  
+    
     public T getById(Object key) {
         T hasil = null;
         session = this.sessionFactory.openSession();
@@ -86,7 +72,7 @@ public class GeneralDAO<T> {
         return hasil;
     }
 
-  
+    
     public boolean saveOrDelete(T t, boolean isDelete) {
         boolean result = false;
         try {
@@ -99,7 +85,7 @@ public class GeneralDAO<T> {
             }
             transaction.commit();
             result = true;
-        } catch (Exception e) {
+        } catch (HibernateException e) {
             e.printStackTrace();
             if (transaction != null) {
                 transaction.rollback();
@@ -111,3 +97,4 @@ public class GeneralDAO<T> {
     }
 
 }
+

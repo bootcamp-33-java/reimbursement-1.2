@@ -41,7 +41,7 @@ public class EmployeeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
 
-            request.getSession().setAttribute("employee", edao.getData(null));
+            request.getSession().setAttribute("employee", edao.getAll());
             RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
             rd.include(request, response);
 //            response.sendRedirect("register.jsp");

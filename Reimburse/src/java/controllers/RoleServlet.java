@@ -39,7 +39,7 @@ public class RoleServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            request.getSession().setAttribute("roles", rdao.getData(null));
+            request.getSession().setAttribute("roles", rdao.getAll());
             RequestDispatcher rd = request.getRequestDispatcher("role.jsp");
             rd.include(request, response);
         }
