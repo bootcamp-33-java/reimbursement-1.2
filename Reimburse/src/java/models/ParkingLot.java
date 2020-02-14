@@ -39,38 +39,42 @@ public class ParkingLot implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "ID")
-    private Long id;
+    private String id;
+    
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
+    
     @Basic(optional = false)
     @Column(name = "LOCATION")
     private String location;
+    
     @Basic(optional = false)
     @Column(name = "PHONE_NUMBER")
-    private long phoneNumber;
+    private String phoneNumber;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parkingLot", fetch = FetchType.LAZY)
     private List<Ticket> ticketList;
 
     public ParkingLot() {
     }
 
-    public ParkingLot(Long id) {
+    public ParkingLot(String id) {
         this.id = id;
     }
 
-    public ParkingLot(Long id, String name, String location, long phoneNumber) {
+    public ParkingLot(String id, String name, String location, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.phoneNumber = phoneNumber;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -90,11 +94,11 @@ public class ParkingLot implements Serializable {
         this.location = location;
     }
 
-    public long getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

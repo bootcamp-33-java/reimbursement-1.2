@@ -47,30 +47,39 @@ public class Reimburse implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    
     @Basic(optional = false)
     @Column(name = "START_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
+    
     @Basic(optional = false)
     @Column(name = "END_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
+    
     @Basic(optional = false)
     @Column(name = "TOTAL")
     private long total;
+    
     @Basic(optional = false)
     @Column(name = "NOTES")
     private String notes;
+    
     @Basic(optional = false)
     @Column(name = "PERIOD")
     private String period;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "reimburse", fetch = FetchType.LAZY)
     private List<HistoryStatus> historyStatusList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "reimburse", fetch = FetchType.LAZY)
     private List<Ticket> ticketList;
+    
     @JoinColumn(name = "EMPLOYEE", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Employee employee;
+    
     @JoinColumn(name = "CURRENT_STATUS", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Status currentStatus;
