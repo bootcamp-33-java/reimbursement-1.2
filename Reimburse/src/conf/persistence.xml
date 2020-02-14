@@ -6,6 +6,14 @@
     <class>models.EmployeeRole</class>
     <class>models.Account</class>
     <class>models.Employee</class>
+    <class>models.History</class>
+    <class>models.Reimburse</class>
+    <class>models.ParkingLot</class>
+    <class>models.Vehicle</class>
+    <class>models.Site</class>
+    <class>models.Ticket</class>
+    <class>models.Status</class>
+    <class>models.HistoryStatus</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:XE"/>

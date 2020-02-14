@@ -6,7 +6,6 @@
 package models;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author FIKRI-PC
+ * @author Insane
  */
 @Entity
 @Table(name = "ACCOUNT")
@@ -35,11 +34,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Account implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "ID")
-    private BigDecimal id;
+    private String id;
     @Basic(optional = false)
     @Column(name = "PASSWORD")
     private String password;
@@ -48,7 +46,7 @@ public class Account implements Serializable {
     private String token;
     @Basic(optional = false)
     @Column(name = "IS_VERIFY")
-    private BigDecimal isVerify;
+    private String isVerify;
     @JoinColumn(name = "ID", referencedColumnName = "ID", insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private Employee employee;
@@ -56,22 +54,22 @@ public class Account implements Serializable {
     public Account() {
     }
 
-    public Account(BigDecimal id) {
+    public Account(String id) {
         this.id = id;
     }
 
-    public Account(BigDecimal id, String password, String token, BigDecimal isVerify) {
+    public Account(String id, String password, String token, String isVerify) {
         this.id = id;
         this.password = password;
         this.token = token;
         this.isVerify = isVerify;
     }
 
-    public BigDecimal getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -91,11 +89,11 @@ public class Account implements Serializable {
         this.token = token;
     }
 
-    public BigDecimal getIsVerify() {
+    public String getIsVerify() {
         return isVerify;
     }
 
-    public void setIsVerify(BigDecimal isVerify) {
+    public void setIsVerify(String isVerify) {
         this.isVerify = isVerify;
     }
 

@@ -42,18 +42,25 @@ Contributor(s):
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>
-    <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:XE [reimburse on REIMBURSE]</property>
-    <property name="hibernate.connection.username">system</property>
+    <property name="hibernate.connection.url">jdbc:oracle:thin:@localhost:1521:XE</property>
+    <property name="hibernate.connection.username">reim</property>
     <property name="hibernate.connection.password">makankuy</property>
     <property name="hibernate.dialect">org.hibernate.dialect.OracleDialect</property>
-    <property name="hibernate.show_sql">false</property>
-    <property name="hibernate.default_schema">reimburse</property>
+    <property name="hibernate.default_schema">reim</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.enable_lazy_load_no_trans">true</property>
     <property name="hibernate.current_session_context_class">thread</property>
     <property name="hibernate.connection.autocommit">true</property>
-    <property name="hibernate.enable_lazy_load_no_trans">true</property>
     <mapping class="models.Employee"/>
     <mapping class="models.Account"/>
-    <mapping class="models.Employee_Role"/>
+    <mapping class="models.EmployeeRole"/>
+    <mapping class="models.ParkingLot"/>
+    <mapping class="models.Reimburse"/>
     <mapping class="models.Role"/>
+    <mapping class="models.Vehicle"/>
+    <mapping class="models.Site"/>
+    <mapping class="models.Status"/>
+    <mapping class="models.Ticket"/>
+    <mapping class="models.HistoryStatus"/>
   </session-factory>
 </hibernate-configuration>

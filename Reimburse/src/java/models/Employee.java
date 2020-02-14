@@ -6,7 +6,6 @@
 package models;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -15,6 +14,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,7 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author FIKRI-PC
+ * @author Insane
  */
 @Entity
 @Table(name = "EMPLOYEE")
@@ -38,16 +39,15 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Employee.findByName", query = "SELECT e FROM Employee e WHERE e.name = :name")
     , @NamedQuery(name = "Employee.findByEmail", query = "SELECT e FROM Employee e WHERE e.email = :email")
     , @NamedQuery(name = "Employee.findByIsActive", query = "SELECT e FROM Employee e WHERE e.isActive = :isActive")
-    , @NamedQuery(name = "Employee.findByPhoneNumber", query = "SELECT e FROM Employee e WHERE e.phoneNumber = :phoneNumber")
-    , @NamedQuery(name = "Employee.findByHireDate", query = "SELECT e FROM Employee e WHERE e.hireDate = :hireDate")})
+    , @NamedQuery(name = "Employee.findByHireDate", query = "SELECT e FROM Employee e WHERE e.hireDate = :hireDate")
+    , @NamedQuery(name = "Employee.findByPhoneNumber", query = "SELECT e FROM Employee e WHERE e.phoneNumber = :phoneNumber")})
 public class Employee implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
     @Column(name = "ID")
-    private BigDecimal id;
+    private String id;
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
@@ -56,40 +56,47 @@ public class Employee implements Serializable {
     private String email;
     @Basic(optional = false)
     @Column(name = "IS_ACTIVE")
-    private BigDecimal isActive;
-    @Basic(optional = false)
-    @Column(name = "PHONE_NUMBER")
-    private String phoneNumber;
+    private boolean isActive;
     @Basic(optional = false)
     @Column(name = "HIRE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date hireDate;
+    @Basic(optional = false)
+    @Column(name = "PHONE_NUMBER")
+    private String phoneNumber;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pic", fetch = FetchType.LAZY)
+    private List<Site> siteList;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
     private Account account;
+    @JoinColumn(name = "SITE", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Site site;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
+    private List<Reimburse> reimburseList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
     private List<EmployeeRole> employeeRoleList;
 
     public Employee() {
     }
 
-    public Employee(BigDecimal id) {
+    public Employee(String id) {
         this.id = id;
     }
 
-    public Employee(BigDecimal id, String name, String email, BigDecimal isActive, String phoneNumber, Date hireDate) {
+    public Employee(String id, String name, String email, boolean isActive, Date hireDate, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.isActive = isActive;
-        this.phoneNumber = phoneNumber;
         this.hireDate = hireDate;
+        this.phoneNumber = phoneNumber;
     }
 
-    public BigDecimal getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigDecimal id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -109,20 +116,12 @@ public class Employee implements Serializable {
         this.email = email;
     }
 
-    public BigDecimal getIsActive() {
+    public boolean getIsActive() {
         return isActive;
     }
 
-    public void setIsActive(BigDecimal isActive) {
+    public void setIsActive(boolean isActive) {
         this.isActive = isActive;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     public Date getHireDate() {
@@ -133,12 +132,46 @@ public class Employee implements Serializable {
         this.hireDate = hireDate;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    @XmlTransient
+    public List<Site> getSiteList() {
+        return siteList;
+    }
+
+    public void setSiteList(List<Site> siteList) {
+        this.siteList = siteList;
+    }
+
     public Account getAccount() {
         return account;
     }
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public Site getSite() {
+        return site;
+    }
+
+    public void setSite(Site site) {
+        this.site = site;
+    }
+
+    @XmlTransient
+    public List<Reimburse> getReimburseList() {
+        return reimburseList;
+    }
+
+    public void setReimburseList(List<Reimburse> reimburseList) {
+        this.reimburseList = reimburseList;
     }
 
     @XmlTransient
