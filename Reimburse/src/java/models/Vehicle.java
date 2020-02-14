@@ -41,18 +41,23 @@ public class Vehicle implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private String id;
+    
     @Basic(optional = false)
     @Column(name = "EMPLOYEE")
     private String employee;
+    
     @Basic(optional = false)
     @Column(name = "STNK_OWNER")
     private String stnkOwner;
+    
     @Basic(optional = false)
     @Column(name = "PHOTO_STNK")
     private String photoStnk;
+    
     @Basic(optional = false)
     @Column(name = "VEHICLE_TYPE")
     private String vehicleType;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "vehicle", fetch = FetchType.LAZY)
     private List<Ticket> ticketList;
 

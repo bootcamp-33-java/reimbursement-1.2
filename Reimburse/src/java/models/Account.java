@@ -38,15 +38,19 @@ public class Account implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private String id;
+    
     @Basic(optional = false)
     @Column(name = "PASSWORD")
     private String password;
+    
     @Basic(optional = false)
     @Column(name = "TOKEN")
     private String token;
+    
     @Basic(optional = false)
     @Column(name = "IS_VERIFY")
-    private String isVerify;
+    private boolean isVerify;
+    
     @JoinColumn(name = "ID", referencedColumnName = "ID", insertable = false, updatable = false)
     @OneToOne(optional = false, fetch = FetchType.LAZY)
     private Employee employee;
@@ -58,7 +62,7 @@ public class Account implements Serializable {
         this.id = id;
     }
 
-    public Account(String id, String password, String token, String isVerify) {
+    public Account(String id, String password, String token, boolean isVerify) {
         this.id = id;
         this.password = password;
         this.token = token;
@@ -89,11 +93,11 @@ public class Account implements Serializable {
         this.token = token;
     }
 
-    public String getIsVerify() {
+    public boolean getIsVerify() {
         return isVerify;
     }
 
-    public void setIsVerify(String isVerify) {
+    public void setIsVerify(boolean isVerify) {
         this.isVerify = isVerify;
     }
 

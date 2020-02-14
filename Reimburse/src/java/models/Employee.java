@@ -48,31 +48,41 @@ public class Employee implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private String id;
+    
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
+    
     @Basic(optional = false)
     @Column(name = "EMAIL")
     private String email;
+    
     @Basic(optional = false)
     @Column(name = "IS_ACTIVE")
     private boolean isActive;
+    
     @Basic(optional = false)
     @Column(name = "HIRE_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date hireDate;
+    
     @Basic(optional = false)
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pic", fetch = FetchType.LAZY)
     private List<Site> siteList;
+    
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
     private Account account;
+    
     @JoinColumn(name = "SITE", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private Site site;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
     private List<Reimburse> reimburseList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
     private List<EmployeeRole> employeeRoleList;
 

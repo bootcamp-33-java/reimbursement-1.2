@@ -41,22 +41,28 @@ public class Ticket implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    
     @Basic(optional = false)
     @Column(name = "UPLOAD_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date uploadDate;
+    
     @Basic(optional = false)
     @Column(name = "PHOTO_TICKET")
     private String photoTicket;
+    
     @Basic(optional = false)
     @Column(name = "PRICE")
     private long price;
+    
     @JoinColumn(name = "PARKING_LOT", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private ParkingLot parkingLot;
+    
     @JoinColumn(name = "REIMBURSE", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Reimburse reimburse;
+    
     @JoinColumn(name = "VEHICLE", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Vehicle vehicle;
