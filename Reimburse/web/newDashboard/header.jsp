@@ -61,7 +61,7 @@
     <div class="sidebar-fixed peach-gradient-rgba position-fixed">
 
         <a class="logo-wrapper waves-effect">
-            <img src="dist/iniParking.png"  class="img-fluid" style="width:110%;" alt="">
+            <img src="dist/iniParking.png"  class="img-fluid" style="width:100%;height:100%" alt="">
         </a>
 
         <div class="list-group list-group-flush">

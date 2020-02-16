@@ -48,6 +48,11 @@ public class EmployeeRole implements Serializable {
     public EmployeeRole(Integer id) {
         this.id = id;
     }
+    public EmployeeRole(Integer id,Employee employee, Role role) {
+        this.id = id;
+        this.employee = employee;
+        this.role = role;
+    }
 
     public Integer getId() {
         return id;

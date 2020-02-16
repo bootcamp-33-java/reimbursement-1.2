@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import models.Account;
 import models.Employee;
+import models.EmployeeRole;
 import models.Role;
 
 import org.hibernate.SessionFactory;
@@ -31,6 +32,7 @@ public class ManualTestGeneral {
         // ---------------------------------------- Deklarasi DAO ----------------------------------------//
 
         GeneralDAO<Employee> edao = new GeneralDAO<>(sessionFactory, Employee.class);
+        GeneralDAO<EmployeeRole> erdao = new GeneralDAO<>(sessionFactory, EmployeeRole.class);
         GeneralDAO<Role> roledao = new GeneralDAO<>(sessionFactory, Role.class);
         GeneralDAO<Account> adao = new GeneralDAO<>(sessionFactory, Account.class);
         //        GeneralDAO<Account> adao = new GeneralDAO<>(sessionFactory, Account.class);
@@ -50,14 +52,15 @@ public class ManualTestGeneral {
         String id = "LAMgg";
 //        public Employee(String id, String name, String email, boolean isActive, Date hireDate, String phoneNumber) {
         Employee employee =  new Employee(id, "bagus iini", "kokobbg@seb.com", false, Date.valueOf("2020-10-10"), "1232");
-//        Employee employee2 = new Employee(16);
+        EmployeeRole er = new EmployeeRole(2,new Employee("4324"),new Role("IDF"));
 //        System.out.println(edao.saveOrDelete(new Employee("123", "aguuuuuung", "agung@gmail.com", new Boolean(true"true"), Date.valueOf("12/12/2011"), false));
 //        Role rolee = new Role("NG", "GORENG");
 //        System.out.println(roledao.saveOrDelete(rolee, false));
 //        public Account(String id, String password, String token, String isVerify, Employee employee) {
         Account ac = new Account(id, "hasdsa", "sdfds", "false",new Employee (id));
-        System.out.println(edao.saveOrDelete(employee, false));
-        System.out.println(adao.saveOrDelete(ac, false));
+//        System.out.println(edao.saveOrDelete(employee, false));
+//        System.out.println(adao.saveOrDelete(ac, false));
+        System.out.println(erdao.saveOrDelete(er, false));
 //DEPARTMENT END ------------------------------------------------------------------------
         //Spesial aja
         //Lain-lain
