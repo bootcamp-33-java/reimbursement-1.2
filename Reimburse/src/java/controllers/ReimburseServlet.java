@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,9 +24,15 @@ import tools.HibernateUtil;
  * @author yuyun
  */
 @WebServlet(name = "ReimburseServlet", urlPatterns = {"/reimburse"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 1024 * 1024 * 5,
+        maxRequestSize = 1024 * 1024 * 5 * 5)
+
 public class ReimburseServlet extends HttpServlet {
-    private GeneralDAO<Reimburse> redao=new GeneralDAO(HibernateUtil.getSessionFactory(),Reimburse.class);
-    private GeneralDAO<Ticket> tdao=new GeneralDAO(HibernateUtil.getSessionFactory(),Ticket.class);
+
+    private GeneralDAO<Reimburse> redao = new GeneralDAO(HibernateUtil.getSessionFactory(), Reimburse.class);
+    private GeneralDAO<Ticket> tdao = new GeneralDAO(HibernateUtil.getSessionFactory(), Ticket.class);
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,7 +46,7 @@ public class ReimburseServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-             request.getSession().setAttribute("reimburses", tdao.getAll());
+            request.getSession().setAttribute("reimburses", tdao.getAll());
             RequestDispatcher rd = request.getRequestDispatcher("reimburse.jsp");
             rd.include(request, response);
         }
@@ -71,15 +78,14 @@ public class ReimburseServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id=request.getParameter("id");
-        String reimburse=request.getParameter("reimburse");
-        String date=request.getParameter("date");
-        String photo=request.getParameter("photo");
-        String price=request.getParameter("price");
-        String parking=request.getParameter("parking");
-        String vehicle=request.getParameter("vehicle");
+        String id = request.getParameter("id");
+        String reimburse = request.getParameter("reimburse");
+        String date = request.getParameter("date");
+        String photo = request.getParameter("photo");
+        String price = request.getParameter("price");
+        String parking = request.getParameter("parking");
+        String vehicle = request.getParameter("vehicle");
 
-        
         processRequest(request, response);
     }
 

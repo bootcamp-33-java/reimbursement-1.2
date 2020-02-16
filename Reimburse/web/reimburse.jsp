@@ -61,8 +61,8 @@
             <form action="register" method="GET" class="form-inline">
                 <div class="form-group">
                     <!--Trigger/tombol modal insert-->
-                    <button type="button" class="btn btn-lg"  data-toggle="modal" data-target="#exampleModal" >
-                        Insert Data
+                    <button type="button" class="btn btn-lg"  data-toggle="modal" data-target="#applyModal" >
+                        Apply Reimburse
                     </button>
                 </div>
             </form>
@@ -91,16 +91,16 @@
 
                         <%try {
                                 SimpleDateFormat simple = new SimpleDateFormat("dd MMMM yyyy hh:mm:ss");%>
-                                <td><%= simple.format(t.getUploadDate())%></td>
+                        <td><%= simple.format(t.getUploadDate())%></td>
                         <%
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         %>
-                        <td><%= t.getPhotoTicket() %></td>
+                        <td><%= t.getPhotoTicket()%></td>
                         <td><%= t.getPrice()%></td>
-                        <td><%= t.getParkingLot().getName() %></td>
-                        <td><%= t.getVehicle().getVehicleType()+" "+t.getVehicle().getId() %></td>
+                        <td><%= t.getParkingLot().getName()%></td>
+                        <td><%= t.getVehicle().getVehicleType() + " " + t.getVehicle().getId()%></td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal<%
                                 out.print(t.getId());
@@ -124,30 +124,34 @@
                                                 <table border="0" >
                                                     <thead>
                                                         <tr>
-                                                            <th>Employee ID</th>
-                                                            <th><input type="text" readonly="" name="id" value="<% out.print(e.getId()); %>" /></th>
+
+                                                            <th colspan="2"><input type="hidden" readonly="" name="id" value="<% out.print(t.getId()); %>" /></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>Name</td>
-                                                            <td><input type="text" name="employeeName" value="<% out.print(e.getName()); %>" /></td>
+
+                                                            <td colspan="2"><input type="hidden" name="reimburse" value="<% out.print(t.getReimburse().getId()); %>" /></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Email</td>
-                                                            <td><input type="email" name="employeeEmail" value="<% out.print(e.getEmail()); %>" /></td>
+                                                            <td>Date</td>
+                                                            <td><input type="datetime" name="date" value="<% out.print(t.getUploadDate()); %>" /></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>IsActive</td>
-                                                            <td><input type="text" name="employeeIsActive" value="<% out.print(e.getIsActive()); %>" /></td>
+                                                            <td>Ticket Photo</td>
+                                                            <td><input type="file" name="photo" value="<% out.print(t.getPhotoTicket()); %>" /></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Phone Number</td>
-                                                            <td><input type="text" name="employeePhoneNumber" value="<% out.print(e.getPhoneNumber()); %>" /></td>
+                                                            <td>Price</td>
+                                                            <td><input type="text" name="price" value="<% out.print(t.getPrice()); %>" /></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Hire Data</td>
-                                                            <td><input type="date" name="employeeHireDate" value="<% out.print(e.getPhoneNumber()); %>" /></td>
+                                                            <td>Parking Lot</td>
+                                                            <td><input type="text" name="parking" value="<% out.print(t.getParkingLot().getName()); %>" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Vehicle</td>
+                                                            <td><input type="text" name="vehicle" value="<% out.print(t.getVehicle().getVehicleType()); %>" /></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -162,72 +166,76 @@
                                 </div>
                             </form>
 
-                            <form action="register" method="POST">
 
-                                <!--Membuat class MODAL INSERT-->
-                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Insert</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div class="modal-body">
-
-                                                <!--Isi method Insert Modal-->
-                                                <table border="0" >
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Employee ID</th>
-                                                            <th><input type="text" name="id" value="" /></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Employee Name</td>
-                                                            <td><input type="text" name="employeeName" value="" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Employee Email</td>
-                                                            <td><input type="email" name="employeeEmail" value="" /></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td>Employee Phone Number</td>
-                                                            <td><input type="text" name="employeePhoneNumber" value="" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Employee Hire Date</td>
-                                                            <td><input type="date" name="employeeHireDate" value="" /></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <!--Button pada modal Insert-->
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
 
                         </td>
 
                     </tr>
                     <% }%>
                 </tbody>
-
             </table>
-
-
-
         </div>
 
+        <form action="register" method="POST" enctype="multipart/form-data">
+
+            <!--Membuat class MODAL INSERT-->
+            <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Apply Reimburse</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <!--Isi method Insert Modal-->
+                            <table border="0" >
+                                <tbody>
+                                    
+                                    <tr>
+                                        <td>Date</td>
+                                        <td><input type="datetime" name="date" value="" /></td>
+                                    </tr>
+                                
+                                    <tr>
+                                        <td>Ticket Photo</td>
+                                        <td><input type="file" name="photo" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Price</td>
+                                        <td><input type="text" name="price" value="" /></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td>Parking Lot</td>
+                                        <td>
+                                            <%-- <select name="job"   class="custom-select">
+                                    <option selected>Select Job</option>
+                                    <%for (Job j : jobs) {%>
+                                    <option value="<%=j.getId()%>"><%=j.getTitle()%></option>
+                                    <% }%>
+                                </select> --%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Employee Hire Date</td>
+                                        <td><input type="date" name="employeeHireDate" value="" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <!--Button pada modal Insert-->
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
         <!-- script sidebar -->
         <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
