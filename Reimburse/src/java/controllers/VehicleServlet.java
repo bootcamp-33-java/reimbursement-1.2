@@ -1,9 +1,10 @@
+package controllers;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controllers;
 
 import daos.GeneralDAO;
 import java.io.IOException;
@@ -14,17 +15,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Role;
+import models.Employee;
+import models.Vehicle;
+import org.hibernate.SessionFactory;
 import tools.HibernateUtil;
 
 /**
  *
- * @author Insane
+ * @author HENSTECH
  */
-@WebServlet(name = "RoleServlet", urlPatterns = {"/role"})
-public class RoleServlet extends HttpServlet {
+@WebServlet(urlPatterns = {"/vehicle"})
+public class VehicleServlet extends HttpServlet {
 
-    private GeneralDAO<Role> rdao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Role.class);
+    private GeneralDAO<Vehicle> vdao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Vehicle.class);
+    private GeneralDAO<Employee> edao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Employee.class);
+    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,9 +44,12 @@ public class RoleServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            request.getSession().setAttribute("roles", rdao.getAll());
-            RequestDispatcher rd = request.getRequestDispatcher("role.jsp");
+            request.getSession().setAttribute("vehicles", vdao.getAll());
+            request.getSession().setAttribute("employees", edao.getAll());
+            RequestDispatcher rd = request.getRequestDispatcher("vehicle.jsp");
             rd.include(request, response);
+
+            /* TODO output your page here. You may use following sample code. */
         }
     }
 
@@ -57,13 +65,9 @@ public class RoleServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        PrintWriter out = response.getWriter();
+      PrintWriter out = response.getWriter();
         if (request.getParameter("action") != null && request.getParameter("id") != null) {
             if (request.getParameter("action").equals("delete")) {
-                String id = request.getParameter("id");
-                String name = request.getParameter("roleName");
-                
                 out.println("<script src= 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'> </script>");
                 out.println("<script src= 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
                 out.println("<script src= 'https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>");
@@ -80,8 +84,7 @@ public class RoleServlet extends HttpServlet {
                         + "    swal(\"Poof! Your imaginary file has been deleted!\", {\n"
                         + "      icon: \"success\",\n"
                         + "    });");
-                Role rolee = new Role(id,name) ;
-                rdao.saveOrDelete(rolee, true);
+                vdao.saveOrDelete(new Vehicle(request.getParameter("id")), true);
                 out.println("} else {\n"
                         + "    swal(\"Your imaginary file is safe!\");\n"
                         + "  }");
@@ -90,11 +93,10 @@ public class RoleServlet extends HttpServlet {
                 out.println("});");
                 out.println("</script>");
             } else if (request.getParameter("action").equals("update")) {
-                Role role = rdao.getById(request.getParameter("id"));
-                request.getSession().setAttribute("role", role);
+                Vehicle vehicle = vdao.getById(request.getParameter("id"));
+                request.getSession().setAttribute("vehicles", vehicle);
             }
         }
-
         processRequest(request, response);
     }
 
@@ -109,30 +111,34 @@ public class RoleServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String id = request.getParameter("id");
-        String name = request.getParameter("roleName");
-
+        String owner = request.getParameter("owner");
+        String stnk= request.getParameter("stnk");
+        String type= request.getParameter("type");
+        String nik = request.getParameter("nik");
         PrintWriter out = response.getWriter();
-        if (id != null && name != null) {
+        if (id != null && owner !=null && stnk !=null && type !=null && nik != null) {
+
             out.println("<script src= 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'> </script>");
             out.println("<script src= 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
             out.println("<script src= 'https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>");
             out.println("<script>");
             out.println("$(document).ready(function(){");
 
-            if (!id.matches("[A-z]+")) {
-                out.println("swal ('Gagal !', 'Data gagal disimpan', 'error');");
-            } else{
-                rdao.saveOrDelete(new Role(id, name), false);
+            if (id.matches("[0-9]+")) {
+                out.println("swal ('Gagal !', 'Data gagal disimpan1', 'error');");
+            }else if (id.matches("[A-z]+")) {
+                out.println("swal ('Gagal !', 'Data gagal disimpan2', 'error');");
+            } else if (vdao.saveOrDelete(new Vehicle(id, owner, stnk, type , new Employee(nik)), false)) {
                 out.println("swal ('Sukses !', 'Data berhasil disimpan', 'success');");
             }
             out.println("});");
             out.println("</script>");
-
         }
+        
 
         processRequest(request, response);
+
     }
 
     /**

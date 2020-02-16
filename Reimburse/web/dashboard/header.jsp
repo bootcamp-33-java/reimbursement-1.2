@@ -1,196 +1,121 @@
-<%-- 
-    Document   : header
-    Created on : Feb 14, 2020, 10:56:25 AM
-    Author     : Insane
---%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-    <head>
+<style>
+    .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 1;
+        top: 10px;
+        left: 0;
+        background:#333333;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
 
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>MaterialAdminLTE 2 | Starter</title>
-        <!-- Tell the browser to be responsive to screen width -->
-        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <!-- Bootstrap 3.3.6 -->
-        <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-        <!-- Ionicons -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-        <!-- Theme style -->
-        <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-        <!-- Material Design -->
-        <link rel="stylesheet" href="dist/css/bootstrap-material-design.min.css">
-        <link rel="stylesheet" href="dist/css/ripples.min.css">
-        <link rel="stylesheet" href="dist/css/MaterialAdminLTE.min.css">
-        <!-- MaterialAdminLTE Skins. We have chosen the skin-blue for this starter
-              page. However, you can choose any other skin. Make sure you
-              apply the skin class to the body tag so the changes take effect.
-        -->
-        <link rel="stylesheet" href="dist/css/skins/skin-md-blue.min.css">
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    .sidebar a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 20px;
+        font-family: Candara;
+        color: #818181;
+        display: block;
+        transition: 0.3s;
+    }
 
-    </head>
-    
-</a>
+    .sidebar a:hover {
+        color: #f1f1f1;
+    }
 
-<!-- Header Navbar -->
-<nav class="navbar navbar-static-top" role="navigation">
-    <!-- Sidebar toggle button-->
-    <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-        <span class="sr-only">Toggle navigation</span>
-    </a>
-    <!-- Navbar Right Menu -->
-    <div class="navbar-custom-menu">
-        <ul class="nav navbar-nav">
-            <!-- Messages: style can be found in dropdown.less-->
-            <li class="dropdown messages-menu">
-                <!-- Menu toggle button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-envelope-o"></i>
-                    <span class="label label-success">4</span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li class="header">You have 4 messages</li>
-                    <li>
-                        <!-- inner menu: contains the messages -->
-                        <ul class="menu">
-                            <li><!-- start message -->
-                                <a href="#">
-                                    <div class="pull-left">
-                                        <!-- User Image -->
-                                        <img src="dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
-                                    </div>
-                                    <!-- Message title and timestamp -->
-                                    <h4>
-                                        Support Team
-                                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                                    </h4>
-                                    <!-- The message -->
-                                    <p>Why not buy a new awesome theme?</p>
-                                </a>
-                            </li>
-                            <!-- end message -->
-                        </ul>
-                        <!-- /.menu -->
-                    </li>
-                    <li class="footer"><a href="#">See All Messages</a></li>
-                </ul>
-            </li>
-            <!-- /.messages-menu -->
 
-            <!-- Notifications Menu -->
-            <li class="dropdown notifications-menu">
-                <!-- Menu toggle button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-bell-o"></i>
-                    <span class="label label-warning">10</span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li class="header">You have 10 notifications</li>
-                    <li>
-                        <!-- Inner Menu: contains the notifications -->
-                        <ul class="menu">
-                            <li><!-- start notification -->
-                                <a href="#">
-                                    <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                                </a>
-                            </li>
-                            <!-- end notification -->
-                        </ul>
-                    </li>
-                    <li class="footer"><a href="#">View all</a></li>
-                </ul>
-            </li>
-            <!-- Tasks Menu -->
-            <li class="dropdown tasks-menu">
-                <!-- Menu Toggle Button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <i class="fa fa-flag-o"></i>
-                    <span class="label label-danger">9</span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li class="header">You have 9 tasks</li>
-                    <li>
-                        <!-- Inner menu: contains the tasks -->
-                        <ul class="menu">
-                            <li><!-- Task item -->
-                                <a href="#">
-                                    <!-- Task title and progress text -->
-                                    <h3>
-                                        Design some buttons
-                                        <small class="pull-right">20%</small>
-                                    </h3>
-                                    <!-- The progress bar -->
-                                    <div class="progress xs">
-                                        <!-- Change the css width attribute to simulate progress -->
-                                        <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                            <span class="sr-only">20% Complete</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <!-- end task item -->
-                        </ul>
-                    </li>
-                    <li class="footer">
-                        <a href="#">View all tasks</a>
-                    </li>
-                </ul>
-            </li>
-            <!-- User Account Menu -->
-            <li class="dropdown user user-menu">
-                <!-- Menu Toggle Button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <!-- The user image in the navbar-->
-                    <img src="dist/img/user-160x160.jpg" class="user-image" alt="User Image">
-                    <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                    <span class="hidden-xs">Thanh Nguyen</span>
-                </a>
-                <ul class="dropdown-menu">
-                    <!-- The user image in the menu -->
-                    <li class="user-header">
-                        <img src="dist/img/user-160x160.jpg" class="img-circle" alt="User Image">
 
-                        <p>
-                            Thanh Nguyen <br> <small>Software Developer</small>
-                            <small>Member since Nov. 2012c</small>
-                        </p>
-                    </li>
-                    <!-- Menu Body -->
-                    <li class="user-body">
-                        <div class="row">
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Followers</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Sales</a>
-                            </div>
-                            <div class="col-xs-4 text-center">
-                                <a href="#">Friends</a>
-                            </div>
-                        </div>
-                        <!-- /.row -->
-                    </li>
-                    <!-- Menu Footer-->
-                    <li class="user-footer">
-                        <div class="pull-left">
-                            <a href="#" class="btn btn-default btn-flat">Profile</a>
-                        </div>
-                        <div class="pull-right">
-                            <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                        </div>
-                    </li>
-                </ul>
-            </li>
+    .openbtn {
+        font-size: 20px;
+        cursor: pointer;
+        background-color: #140114;
+        color: white;
+        padding: 0px 15px 0px 10px;
+        border: none;
+    }
 
-        </ul>
-    </div>
+    .openbtn:hover {
+        background-color: #444;
+    }
+   
+
+
+    #main {
+        transition: margin-left .5s;
+        padding: 16px;
+    }
+
+    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+    @media screen and (max-height: 450px) {
+        .sidebar {padding-top: 15px;}
+        .sidebar a {font-size: 18px;}
+    }
+
+</style>
+<div id="mySidebar" class="sidebar">
+    <!--<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>-->
+    <a href="#">Employee</a>
+    <a href="#">Account</a>
+    <a href="#">Job</a>
+    <a href="#">Region</a>
+    <a href="#">Department</a>
+    <a href="#">Location</a>
+    <a href="#">Country</a>
+
+</div>
+<div style="margin-bottom: 90px"></div>
+<nav class="navbar navbar-expand-sm navbar-dark fixed-top " style="background: #140114" >
+    <button class="openbtn myBtn" id="myBtn"> <span class="navbar-toggler-icon"></span></button>
+    <a class="navbar-brand" href="#" style="font-family: futura md bt">CRUD</a>
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="#">Employee</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Account</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Job</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="region.jsp">Region</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Department</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Location</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Country</a>
+        </li>
+    </ul>
 </nav>
 
 
-</html>
+<script>
+    document.getElementById("myBtn").addEventListener("click", toggleNav);
+    function toggleNav() {
+        navSize = document.getElementById("mySidebar").style.width;
+        if (navSize === "250px") {
+            return close();
+        }
+        return open();
+    }
+
+    function open() {
+        document.getElementById("mySidebar").style.width = "250px";
+        document.getElementById("main").style.marginRigth = "250px";
+    }
+
+    function close() {
+        document.getElementById("mySidebar").style.width = "0";
+        document.getElementById("main").style.marginRigth = "0";
+    }
+</script>
+
+

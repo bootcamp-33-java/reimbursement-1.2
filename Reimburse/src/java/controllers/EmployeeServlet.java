@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import models.Employee;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Account;
+import org.mindrot.jbcrypt.BCrypt;
 import tools.HibernateUtil;
 
 /**
@@ -26,6 +28,7 @@ import tools.HibernateUtil;
 public class EmployeeServlet extends HttpServlet {
 
     private GeneralDAO<Employee> edao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Employee.class);
+    private GeneralDAO<Account> adao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Account.class);
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,7 +44,7 @@ public class EmployeeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
 
-            request.getSession().setAttribute("employee", edao.getData(null));
+            request.getSession().setAttribute("employee", edao.getAll());
             RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
             rd.include(request, response);
 //            response.sendRedirect("register.jsp");
@@ -114,7 +117,9 @@ public class EmployeeServlet extends HttpServlet {
         String email = request.getParameter("employeeEmail");
         String phoneNumber = request.getParameter("employeePhoneNumber");
         String hireDate = request.getParameter("employeeHireDate");
-
+        String password = request.getParameter("accountPassword");
+        int n = 60;
+        String pass = BCrypt.hashpw(password, BCrypt.gensalt());
         PrintWriter out = response.getWriter();
         if (id != null && name != null && email != null && phoneNumber != null && hireDate != null) {
             out.println("<script src= 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'> </script>");
@@ -126,8 +131,10 @@ public class EmployeeServlet extends HttpServlet {
             if (!id.matches("[0-9]+")) {
                 out.println("swal ('Gagal !', 'Data gagal disimpan', 'error');");
             } else if (edao.saveOrDelete(new Employee(id, name, email, false, Date.valueOf(hireDate), phoneNumber), false)) {
+                adao.saveOrDelete(new Account(id, pass, EmployeeServlet.getAlphaNumericString(n), false, new Employee(id)), false);
                 out.println("swal ('Sukses !', 'Data berhasil disimpan', 'success');");
             }
+//            public Account(String id, String password, String token, String isVerify, Employee employee) {
             out.println("});");
             out.println("</script>");
 
@@ -144,5 +151,31 @@ public class EmployeeServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    static String getAlphaNumericString(int n) {
+
+        // chose a Character random from this String 
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        // create StringBuffer size of AlphaNumericString 
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between 
+            // 0 to AlphaNumericString variable length 
+            int index
+                    = (int) (AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb 
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
+    }
 
 }

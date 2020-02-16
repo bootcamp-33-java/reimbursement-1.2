@@ -43,6 +43,12 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Employee.findByPhoneNumber", query = "SELECT e FROM Employee e WHERE e.phoneNumber = :phoneNumber")})
 public class Employee implements Serializable {
 
+    @Basic(optional = false)
+    @Column(name = "IS_ACTIVE")
+    private boolean isActive;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
+    private List<Vehicle> vehicleList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -57,9 +63,6 @@ public class Employee implements Serializable {
     @Column(name = "EMAIL")
     private String email;
     
-    @Basic(optional = false)
-    @Column(name = "IS_ACTIVE")
-    private boolean isActive;
     
     @Basic(optional = false)
     @Column(name = "HIRE_DATE")
@@ -216,6 +219,17 @@ public class Employee implements Serializable {
     @Override
     public String toString() {
         return "models.Employee[ id=" + id + " ]";
+    }
+
+
+
+    @XmlTransient
+    public List<Vehicle> getVehicleList() {
+        return vehicleList;
+    }
+
+    public void setVehicleList(List<Vehicle> vehicleList) {
+        this.vehicleList = vehicleList;
     }
     
 }

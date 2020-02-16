@@ -62,6 +62,14 @@ public class Account implements Serializable {
         this.id = id;
     }
 
+    public Account(String id, String password, String token, boolean isVerify, Employee employee) {
+        this.id = id;
+        this.password = password;
+        this.token = token;
+        this.isVerify = isVerify;
+        this.employee = employee;
+    }
+
     public Account(String id, String password, String token, boolean isVerify) {
         this.id = id;
         this.password = password;
