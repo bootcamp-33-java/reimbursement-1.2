@@ -44,7 +44,6 @@ public class EmployeeServlet extends HttpServlet {
             request.getSession().setAttribute("employee", edao.getAll());
             RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
             rd.include(request, response);
-//            response.sendRedirect("register.jsp");
 
         }
     }
