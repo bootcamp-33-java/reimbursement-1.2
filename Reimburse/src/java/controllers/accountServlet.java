@@ -52,7 +52,6 @@ public class accountServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     // to send email
     private void sendMail(String firstname, String lastname, String token, String email) {
 
@@ -90,7 +89,7 @@ public class accountServlet extends HttpServlet {
         } catch (MessagingException e) {
         }
     }
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -117,8 +116,8 @@ public class accountServlet extends HttpServlet {
             throws ServletException, IOException {
         String id1 = request.getParameter("id");
 //        String pass2 = request.getParameter("pass2");
-        
-        Account account =new Account(id1);
+
+        Account account = new Account(id1);
         adao.saveOrDelete(account, false);
         processRequest(request, response);
     }
@@ -138,12 +137,20 @@ public class accountServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         Employee employee = edao.getByEmail(username);
-        if (employee != null && BCrypt.checkpw(password, employee.getAccount().getPassword())){
+        if (employee != null && BCrypt.checkpw(password, employee.getAccount().getPassword())) {
             isTrue = true;
         }
+//        <<<< Tambahan Dari FIkri Method change password >>>>
+        int n = 60;
+        String id = request.getParameter("id");
+
+        String pass = BCrypt.hashpw(password, BCrypt.gensalt());
+        PrintWriter out = response.getWriter();
+        adao.saveOrDelete(new Account(id, pass, EmployeeServlet.getAlphaNumericString(n), false, new Employee(id)), false);
+
+//            public Account(String id, String password, String token, String isVerify, Employee employee) {
         processRequest(request, response);
 
-        
     }
 
     /**
@@ -156,5 +163,30 @@ public class accountServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    
+    static String getAlphaNumericString(int n) {
+
+        // chose a Character random from this String 
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        // create StringBuffer size of AlphaNumericString 
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between 
+            // 0 to AlphaNumericString variable length 
+            int index
+                    = (int) (AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb 
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
+    }
+
 }
