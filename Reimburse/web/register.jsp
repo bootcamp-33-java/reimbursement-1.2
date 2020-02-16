@@ -113,6 +113,8 @@
                                     out.print(e.getIsActive());
                                     out.print(e.getPhoneNumber());
                                     out.print(e.getHireDate());
+                                    
+                                    
                                      %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -194,17 +196,20 @@
                                                             <td><input type="text" name="employeeName" value="" /></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>Employee Email</td>
-                                                            <td><input type="email" name="employeeEmail" value="" /></td>
-                                                        </tr>
-
-                                                        <tr>
                                                             <td>Employee Phone Number</td>
                                                             <td><input type="text" name="employeePhoneNumber" value="" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Employee Hire Date</td>
                                                             <td><input type="date" name="employeeHireDate" value="" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Employee Email</td>
+                                                            <td><input type="email" name="employeeEmail" value="" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Account Password</td>
+                                                            <td><input type="password" name="accountPassword" value="" /></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>

@@ -59,7 +59,9 @@ public class Vehicle implements Serializable {
         this.stnkOwner = stnkOwner;
         this.photoStnk = photoStnk;
         this.vehicleType = vehicleType;
+        this.employee = employee;
     }
+
 
     public String getId() {
         return id;
