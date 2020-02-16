@@ -8,9 +8,6 @@
 <!DOCTYPE html>
 <html>
     <!-- To the right -->
-    <div class="pull-right hidden-xs">
-        Reimbursement
-    </div>
     <!-- Default to the left -->
     <strong>Copyright &copy; 2020 <a href="#">Metro Data Group</a>.</strong> All rights reserved.
 </html>

@@ -65,6 +65,14 @@ public class Account implements Serializable {
         this.isVerify = isVerify;
     }
 
+    public Account(String id, String password, String token, String isVerify, Employee employee) {
+        this.id = id;
+        this.password = password;
+        this.token = token;
+        this.isVerify = isVerify;
+        this.employee = employee;
+    }
+
     public String getId() {
         return id;
     }
@@ -129,5 +137,5 @@ public class Account implements Serializable {
     public String toString() {
         return "models.Account[ id=" + id + " ]";
     }
-    
+
 }

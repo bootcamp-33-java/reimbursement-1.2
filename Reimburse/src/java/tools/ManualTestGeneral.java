@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import models.Account;
 import models.Employee;
 import models.Role;
 
@@ -31,6 +32,7 @@ public class ManualTestGeneral {
 
         GeneralDAO<Employee> edao = new GeneralDAO<>(sessionFactory, Employee.class);
         GeneralDAO<Role> roledao = new GeneralDAO<>(sessionFactory, Role.class);
+        GeneralDAO<Account> adao = new GeneralDAO<>(sessionFactory, Account.class);
         //        GeneralDAO<Account> adao = new GeneralDAO<>(sessionFactory, Account.class);
 
         // ---------------------------------------- Testing  ----------------------------------------//       
@@ -45,12 +47,17 @@ public class ManualTestGeneral {
         //            System.out.println(d.getLocation().getId() + "\n");
         //        }
         //SAVE OR DELETE
+        String id = "LAMgg";
 //        public Employee(String id, String name, String email, boolean isActive, Date hireDate, String phoneNumber) {
-        Employee employee = new Employee("HERU", "bagus iini", "agung@sbb.com", false, Date.valueOf("2000-10-10"), "08232121232");
+        Employee employee =  new Employee(id, "bagus iini", "kokobbg@seb.com", false, Date.valueOf("2020-10-10"), "1232");
 //        Employee employee2 = new Employee(16);
+//        System.out.println(edao.saveOrDelete(new Employee("123", "aguuuuuung", "agung@gmail.com", new Boolean(true"true"), Date.valueOf("12/12/2011"), false));
+//        Role rolee = new Role("NG", "GORENG");
+//        System.out.println(roledao.saveOrDelete(rolee, false));
+//        public Account(String id, String password, String token, String isVerify, Employee employee) {
+        Account ac = new Account(id, "hasdsa", "sdfds", "false",new Employee (id));
         System.out.println(edao.saveOrDelete(employee, false));
-        Role rolee = new Role("NG", "GORENG");
-        System.out.println(roledao.saveOrDelete(rolee, false));
+        System.out.println(adao.saveOrDelete(ac, false));
 //DEPARTMENT END ------------------------------------------------------------------------
         //Spesial aja
         //Lain-lain

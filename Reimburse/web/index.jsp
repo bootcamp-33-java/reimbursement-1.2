@@ -7,6 +7,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    <head>
+        <jsp:include page= "dashboard/head.jsp" />
+    </head>
   
     <body class="hold-transition skin-blue sidebar-mini">
 
