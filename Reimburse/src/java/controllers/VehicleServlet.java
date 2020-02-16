@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Employee;
 import models.Vehicle;
-import org.hibernate.SessionFactory;
 import tools.HibernateUtil;
 
 /**

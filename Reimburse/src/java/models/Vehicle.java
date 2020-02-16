@@ -54,13 +54,14 @@ public class Vehicle implements Serializable {
         this.id = id;
     }
 
-    public Vehicle(String id, String stnkOwner, String photoStnk, String vehicleType) {
+    public Vehicle(String id, String stnkOwner, String photoStnk, String vehicleType, Employee employee) {
         this.id = id;
         this.stnkOwner = stnkOwner;
         this.photoStnk = photoStnk;
         this.vehicleType = vehicleType;
         this.employee = employee;
     }
+
 
 
     public String getId() {

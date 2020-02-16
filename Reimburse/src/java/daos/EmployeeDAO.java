@@ -26,7 +26,7 @@ public class EmployeeDAO extends GeneralDAO<Employee>{
         session = this.sessionFactory.openSession();
         transaction = session.beginTransaction();
         try {
-            String hql = "FROM " + t.getClass().getSimpleName() + " WHERE EMAIL = :x";
+            String hql = "FROM Employee WHERE EMAIL = :x";
             Query query = session.createQuery(hql);
             query.setParameter("x", key);
             hasil = (Employee) query.uniqueResult();
