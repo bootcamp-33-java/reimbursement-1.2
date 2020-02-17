@@ -10,87 +10,46 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
-        <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Bootstrap CSS CDN -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+        <!-- Our Custom CSS -->
+        <link rel="stylesheet" href="css/style3.css">
+        <!-- Scrollbar Custom CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+
+        <!-- Font Awesome JS -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
         <!------ Include the above in your HEAD tag ---------->
 
     </head>
     <body>
 
-        <div class="container">
+        <div class="container" style="padding-left: 30%">
             <div class="row">
-                <div class="container">
+                <div class="container ">
                     <h1>Change Password</h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col-sm-6 col-sm-offset-3">
-                    <form method="post" id="passwordForm">
-                        <input type="password" class="input-lg form-control" name="password1" id="password1" placeholder="New Password" autocomplete="off">
-                        <input type="password" class="input-lg form-control" name="password2" id="password2" placeholder="Repeat Password" autocomplete="off">
-                        <input type="submit" class="col-xs-12 btn btn-primary btn-load btn-lg" data-loading-text="Changing Password..." value="Change Password">
+                    <form action="login" method="post" id="passwordForm">
+                        <input type="password" class="input-lg form-control" name="password1" id="password1" placeholder="New Password" autocomplete="off"><br>
+                        <input type="password" class="input-lg form-control" name="password2" id="password2" placeholder="Repeat Password" autocomplete="off"><br>
+                        <input type="submit" class="btn btn-primary"  data-loading-text="Changing Password..." value="Change Password">
                     </form>
                 </div><!--/col-sm-6-->
             </div><!--/row-->
         </div>
       
-        <script>
-            $("input[type=password]").keyup(function () {
-                var ucase = new RegExp("[A-Z]+");
-                var lcase = new RegExp("[a-z]+");
-                var num = new RegExp("[0-9]+");
-
-                if ($("#password1").val().length >= 8) {
-                    $("#8char").removeClass("glyphicon-remove");
-                    $("#8char").addClass("glyphicon-ok");
-                    $("#8char").css("color", "#00A41E");
-                } else {
-                    $("#8char").removeClass("glyphicon-ok");
-                    $("#8char").addClass("glyphicon-remove");
-                    $("#8char").css("color", "#FF0004");
-                }
-
-                if (ucase.test($("#password1").val())) {
-                    $("#ucase").removeClass("glyphicon-remove");
-                    $("#ucase").addClass("glyphicon-ok");
-                    $("#ucase").css("color", "#00A41E");
-                } else {
-                    $("#ucase").removeClass("glyphicon-ok");
-                    $("#ucase").addClass("glyphicon-remove");
-                    $("#ucase").css("color", "#FF0004");
-                }
-
-                if (lcase.test($("#password1").val())) {
-                    $("#lcase").removeClass("glyphicon-remove");
-                    $("#lcase").addClass("glyphicon-ok");
-                    $("#lcase").css("color", "#00A41E");
-                } else {
-                    $("#lcase").removeClass("glyphicon-ok");
-                    $("#lcase").addClass("glyphicon-remove");
-                    $("#lcase").css("color", "#FF0004");
-                }
-
-                if (num.test($("#password1").val())) {
-                    $("#num").removeClass("glyphicon-remove");
-                    $("#num").addClass("glyphicon-ok");
-                    $("#num").css("color", "#00A41E");
-                } else {
-                    $("#num").removeClass("glyphicon-ok");
-                    $("#num").addClass("glyphicon-remove");
-                    $("#num").css("color", "#FF0004");
-                }
-
-                if ($("#password1").val() == $("#password2").val()) {
-                    $("#pwmatch").removeClass("glyphicon-remove");
-                    $("#pwmatch").addClass("glyphicon-ok");
-                    $("#pwmatch").css("color", "#00A41E");
-                } else {
-                    $("#pwmatch").removeClass("glyphicon-ok");
-                    $("#pwmatch").addClass("glyphicon-remove");
-                    $("#pwmatch").css("color", "#FF0004");
-                }
-            });
-        </script>
+        
     </body>
 </html>

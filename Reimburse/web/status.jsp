@@ -4,8 +4,7 @@
     Author     : FIKRI-PC
 --%>
 
-<%@page import="models.Employee"%>
-<%@page import="models.Site"%>
+<%@page import="models.Status"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -40,13 +39,12 @@
         <title>JSP Page</title>
     </head>
 
-    <% if (session.getAttribute("sites") == null || session.getAttribute("employees") == null) {
-            response.sendRedirect("site");
+    <% if (session.getAttribute("statuses") == null ) {
+            response.sendRedirect("status");
 
         } else {
-            List<Site> sitees = (List<Site>) session.getAttribute("sites");
-            List<Employee> employees = (List<Employee>) session.getAttribute("employees");
-            Site site = (Site) session.getAttribute("site");
+            List<Status> statusees = (List<Status>) session.getAttribute("statuses");
+            Status status = (Status) session.getAttribute("status");
     %>
 
 
@@ -73,36 +71,31 @@
                     <tr>
                         <th>NO</th>
                         <th>ID</th>
-                        <th>SITE NAME</th>
-                        <th>ADDRESS</th>
-                        <th>PIC</th>
+                        <th>STATUS NAME</th>
                         <th>ACTION</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% int i = 1;
-                        for (Site s : sitees) {%>
+                        for (Status st : statusees) {%>
                     <tr>
                         <td><%= i++%></td>
-                        <td><%= s.getId()%></td>
-                        <td><%= s.getName()%></td>
-                        <td><%= s.getAddress()%></td>
-                        <td><%= s.getPic()%></td>
+                        <td><%= st.getId()%></td>
+                        <td><%= st.getName()%></td>
+                        
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal<%
-                                out.print(s.getId());
-                                out.print(s.getName());
-                                out.print(s.getAddress());
-                                out.print(s.getPic());
+                                out.print(st.getId());
+                                out.print(st.getName());
+                                
                                     %>"><i class="fas fa-edit"></i></button>
-                            <a href="site?action=delete&id=<%=s.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
+                            <a href="status?action=delete&id=<%=st.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
 
                             <form action="site" method="POST">
                                 <div class="modal fade" id="updateModal<%
-                                    out.print(s.getId());
-                                    out.print(s.getName());
-                                    out.print(s.getAddress());
-                                    out.print(s.getPic());
+                                    out.print(st.getId());
+                                    out.print(st.getName());
+                                   
                                      %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -118,26 +111,15 @@
                                                     <thead>
                                                         <tr>
                                                             <th>ID</th>
-                                                            <th><input type="text" readonly="" name="id" value="<% out.print(s.getId()); %>"  /></th>
+                                                            <th><input type="text" readonly="" name="id" value="<% out.print(st.getId()); %>"  /></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>SITE NAME</td>
-                                                            <td><input type="text" name="owner" value="<% out.print(s.getName()); %>" /></td>
+                                                            <td>STATUS NAME</td>
+                                                            <td><input type="text" name="name" value="<% out.print(st.getName()); %>" /></td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>ADDRESS</td>
-                                                            <td><input type="email" name="stnk" value="<% out.print(s.getAddress()); %>" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>PIC</td>
-                                                            <td> <select id="nik" name="pic" class="input-field" >
-                                                                    <% for (Employee e : employees) {%>
-                                                                    <option value="<%=e.getId()%>"><%=e.getId()%>"></option>
-                                                                    <% }%>
-                                                                </select></td></td>
-                                                        </tr>
+                                                        
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -180,21 +162,10 @@
                                         </thead>
                                     <tbody>
                                         <tr>
-                                            <td>SITE NAME</td>
-                                            <td><input type="text" name="owner" value="" /></td>
+                                            <td>STATUS NAME</td>
+                                            <td><input type="text" name="name" value="" /></td>
                                         </tr>
-                                        <tr>
-                                            <td>ADDRESS</td>
-                                            <td><input type="email" name="stnk" value="" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>PIC</td>
-                                            <td> <select id="nik" name="pic" class="input-field" >
-                                                    <% for (Employee e : employees) {%>
-                                                    <option value="<%=e.getId()%>"><%=e.getId()%>"></option>
-                                                    <% }%>
-                                                </select></td></td>
-                                        </tr>
+                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -218,26 +189,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
         <!-- script sidebar -->
 
-        <!--        <script type="text/javascript">
-                    $(document).ready(function () {
-                        $("#sidebar").mCustomScrollbar({
-                            theme: "minimal"
-                        });
-        
-                        $('#dismiss, .overlay').on('click', function () {
-                            $('#sidebar').removeClass('active');
-                            $('.overlay').removeClass('active');
-                        });
-        
-                        $('#sidebarCollapse').on('click', function () {
-                            $('#sidebar').addClass('active');
-                            $('.overlay').addClass('active');
-                            $('.collapse.in').toggleClass('in');
-                            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-                        });
-                    });
-                </script>-->
-
         <footer id="footer" class="footer">
             <div class="footer-copyright text-center py-3">© 2020 Copyright:
                 <a href="https://www.instagram.com/agungld_/?hl=dongaagung_"> AgungLD</a>
@@ -248,7 +199,7 @@
     </body>
 
     <% }
-        session.removeAttribute("site");
+        session.removeAttribute("status");
 
     %>
 

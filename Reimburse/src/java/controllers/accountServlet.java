@@ -67,8 +67,8 @@ public class accountServlet extends HttpServlet {
             throws ServletException, IOException {
         String id1 = request.getParameter("id");
 //        String pass2 = request.getParameter("pass2");
-        
-        Account account =new Account(id1);
+
+        Account account = new Account(id1);
         adao.saveOrDelete(account, false);
         processRequest(request, response);
     }
@@ -88,14 +88,13 @@ public class accountServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         Employee employee = edao.getByEmail(username);
-        if (employee != null && BCrypt.checkpw(password, employee.getAccount().getPassword())){
+        if (employee != null && BCrypt.checkpw(password, employee.getAccount().getPassword())) {
             isTrue = true;
         }
         
         request.setAttribute("idUser", employee);
         processRequest(request, response);
 
-        
     }
 
     /**
@@ -108,5 +107,30 @@ public class accountServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    
+    static String getAlphaNumericString(int n) {
+
+        // chose a Character random from this String 
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        // create StringBuffer size of AlphaNumericString 
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between 
+            // 0 to AlphaNumericString variable length 
+            int index
+                    = (int) (AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb 
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
+    }
+
 }
