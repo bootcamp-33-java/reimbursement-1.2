@@ -6,34 +6,27 @@
 package models;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Insane
+ * @author yuyun
  */
 @Entity
 @Table(name = "VEHICLE")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Vehicle.findAll", query = "SELECT v FROM Vehicle v")
-    , @NamedQuery(name = "Vehicle.findById", query = "SELECT v FROM Vehicle v WHERE v.id = :id")
-    , @NamedQuery(name = "Vehicle.findByEmployee", query = "SELECT v FROM Vehicle v WHERE v.employee = :employee")
-    , @NamedQuery(name = "Vehicle.findByStnkOwner", query = "SELECT v FROM Vehicle v WHERE v.stnkOwner = :stnkOwner")
-    , @NamedQuery(name = "Vehicle.findByPhotoStnk", query = "SELECT v FROM Vehicle v WHERE v.photoStnk = :photoStnk")
-    , @NamedQuery(name = "Vehicle.findByVehicleType", query = "SELECT v FROM Vehicle v WHERE v.vehicleType = :vehicleType")})
+    @NamedQuery(name = "Vehicle.findAll", query = "SELECT v FROM Vehicle v")})
 public class Vehicle implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,9 +34,6 @@ public class Vehicle implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private String id;
-    @Basic(optional = false)
-    @Column(name = "EMPLOYEE")
-    private String employee;
     @Basic(optional = false)
     @Column(name = "STNK_OWNER")
     private String stnkOwner;
@@ -53,8 +43,9 @@ public class Vehicle implements Serializable {
     @Basic(optional = false)
     @Column(name = "VEHICLE_TYPE")
     private String vehicleType;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "vehicle", fetch = FetchType.LAZY)
-    private List<Ticket> ticketList;
+    @JoinColumn(name = "EMPLOYEE", referencedColumnName = "ID")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    private Employee employee;
 
     public Vehicle() {
     }
@@ -63,13 +54,15 @@ public class Vehicle implements Serializable {
         this.id = id;
     }
 
-    public Vehicle(String id, String employee, String stnkOwner, String photoStnk, String vehicleType) {
+    public Vehicle(String id, String stnkOwner, String photoStnk, String vehicleType, Employee employee) {
         this.id = id;
-        this.employee = employee;
         this.stnkOwner = stnkOwner;
         this.photoStnk = photoStnk;
         this.vehicleType = vehicleType;
+        this.employee = employee;
     }
+
+
 
     public String getId() {
         return id;
@@ -77,14 +70,6 @@ public class Vehicle implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(String employee) {
-        this.employee = employee;
     }
 
     public String getStnkOwner() {
@@ -111,13 +96,12 @@ public class Vehicle implements Serializable {
         this.vehicleType = vehicleType;
     }
 
-    @XmlTransient
-    public List<Ticket> getTicketList() {
-        return ticketList;
+    public Employee getEmployee() {
+        return employee;
     }
 
-    public void setTicketList(List<Ticket> ticketList) {
-        this.ticketList = ticketList;
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
     @Override

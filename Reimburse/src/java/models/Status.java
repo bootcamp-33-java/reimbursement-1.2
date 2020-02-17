@@ -38,11 +38,14 @@ public class Status implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "status", fetch = FetchType.LAZY)
     private List<HistoryStatus> historyStatusList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "currentStatus", fetch = FetchType.LAZY)
     private List<Reimburse> reimburseList;
 

@@ -40,15 +40,19 @@ public class Site implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    
     @Basic(optional = false)
     @Column(name = "NAME")
     private String name;
+    
     @Basic(optional = false)
     @Column(name = "ADDRESS")
     private String address;
+    
     @JoinColumn(name = "PIC", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Employee pic;
+    
     @OneToMany(mappedBy = "site", fetch = FetchType.LAZY)
     private List<Employee> employeeList;
 

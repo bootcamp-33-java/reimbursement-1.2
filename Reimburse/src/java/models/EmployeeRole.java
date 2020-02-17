@@ -35,9 +35,11 @@ public class EmployeeRole implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    
     @JoinColumn(name = "EMPLOYEE", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Employee employee;
+    
     @JoinColumn(name = "ROLE", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Role role;
@@ -47,6 +49,11 @@ public class EmployeeRole implements Serializable {
 
     public EmployeeRole(Integer id) {
         this.id = id;
+    }
+    public EmployeeRole(Integer id,Employee employee, Role role) {
+        this.id = id;
+        this.employee = employee;
+        this.role = role;
     }
 
     public Integer getId() {

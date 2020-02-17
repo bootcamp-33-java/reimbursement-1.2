@@ -40,16 +40,20 @@ public class HistoryStatus implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    
     @Basic(optional = false)
     @Column(name = "NOTES")
     private String notes;
+    
     @Basic(optional = false)
     @Column(name = "HISTORY_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date historyDate;
+    
     @JoinColumn(name = "REIMBURSE", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Reimburse reimburse;
+    
     @JoinColumn(name = "STATUS", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Status status;

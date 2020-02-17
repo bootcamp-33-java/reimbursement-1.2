@@ -1,9 +1,10 @@
 <%-- 
-    Document   : employee
-    Created on : Jan 30, 2020, 10:00:01 PM
-    Author     : Insane
+    Document   : vehicle
+    Created on : 15-Feb-2020, 17:26:15
+    Author     : FIKRI-PC
 --%>
 
+<%@page import="models.Employee"%>
 <%@page import="models.Site"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -39,12 +40,13 @@
         <title>JSP Page</title>
     </head>
 
-    <% if (session.getAttribute("sites") == null) {
+    <% if (session.getAttribute("sites") == null || session.getAttribute("employees") == null) {
             response.sendRedirect("site");
 
         } else {
-            List<Site> sites = (List<Site>) session.getAttribute("sites");
-
+            List<Site> sitees = (List<Site>) session.getAttribute("sites");
+            List<Employee> employees = (List<Employee>) session.getAttribute("employees");
+            Site site = (Site) session.getAttribute("site");
     %>
 
 
@@ -55,16 +57,12 @@
         <br>
         <br>
         <br>
-        <!--FORM SEARCH-->
+
         <div class="container col-sm-10">
-            <form action="site" method="GET" class="form-inline">
-                <div class="form-group">
-                    <!--Trigger/tombol modal insert-->
-                    <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#exampleModal" >
-                        Insert Data
-                    </button>
-                </div>
-            </form>
+            <!--Trigger/tombol moedal insert-->
+            <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#insertModal" >
+                Insert Data
+            </button>
         </div>
         <br>
 
@@ -75,22 +73,27 @@
                     <tr>
                         <th>NO</th>
                         <th>ID</th>
-                        <th>NAME</th>
+                        <th>SITE NAME</th>
+                        <th>ADDRESS</th>
+                        <th>PIC</th>
                         <th>ACTION</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% int i = 1;
-                        for (Site s : sites) {%>
+                        for (Site s : sitees) {%>
                     <tr>
                         <td><%= i++%></td>
                         <td><%= s.getId()%></td>
                         <td><%= s.getName()%></td>
+                        <td><%= s.getAddress()%></td>
+                        <td><%= s.getPic()%></td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal<%
                                 out.print(s.getId());
                                 out.print(s.getName());
-                                
+                                out.print(s.getAddress());
+                                out.print(s.getPic());
                                     %>"><i class="fas fa-edit"></i></button>
                             <a href="site?action=delete&id=<%=s.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
 
@@ -98,7 +101,8 @@
                                 <div class="modal fade" id="updateModal<%
                                     out.print(s.getId());
                                     out.print(s.getName());
-                                    
+                                    out.print(s.getAddress());
+                                    out.print(s.getPic());
                                      %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -113,16 +117,27 @@
                                                 <table border="0" >
                                                     <thead>
                                                         <tr>
-                                                            <th>Site ID</th>
-                                                            <th><input type="text" readonly="" name="id" value="<% out.print(s.getId()); %>" /></th>
+                                                            <th>ID</th>
+                                                            <th><input type="text" readonly="" name="id" value="<% out.print(s.getId()); %>"  /></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>Name</td>
-                                                            <td><input type="text" name="siteName" value="<% out.print(s.getName()); %>" /></td>
+                                                            <td>SITE NAME</td>
+                                                            <td><input type="text" name="owner" value="<% out.print(s.getName()); %>" /></td>
                                                         </tr>
-                                                        
+                                                        <tr>
+                                                            <td>ADDRESS</td>
+                                                            <td><input type="email" name="stnk" value="<% out.print(s.getAddress()); %>" /></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>PIC</td>
+                                                            <td> <select id="nik" name="pic" class="input-field" >
+                                                                    <% for (Employee e : employees) {%>
+                                                                    <option value="<%=e.getId()%>"><%=e.getId()%>"></option>
+                                                                    <% }%>
+                                                                </select></td></td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -135,57 +150,63 @@
                                     </div>
                                 </div>
                             </form>
-
-                            <form action="site" method="POST">
-
-                                <!--Membuat class MODAL INSERT-->
-                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Insert</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div class="modal-body">
-
-                                                <!--Isi method Insert Modal-->
-                                                <table border="0" >
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Site ID</th>
-                                                            <th><input type="text" name="id" value="" /></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Site Name</td>
-                                                            <td><input type="text" name="siteName" value="" /></td>
-                                                        </tr>
-                                                        
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <!--Button pada modal Insert-->
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-
                         </td>
-
                     </tr>
                     <% }%>
                 </tbody>
-
             </table>
+            <form action="site" method="POST">
 
+                <!--Membuat class MODAL INSERT-->
+                <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Insert</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <!--Isi method Insert Modal-->
+                                <table border="0" >
+                                    <tbody>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th><input type="text" readonly="" name="id" value=""  /></th>
+                                        </tr>
+                                        </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>SITE NAME</td>
+                                            <td><input type="text" name="owner" value="" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>ADDRESS</td>
+                                            <td><input type="email" name="stnk" value="" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>PIC</td>
+                                            <td> <select id="nik" name="pic" class="input-field" >
+                                                    <% for (Employee e : employees) {%>
+                                                    <option value="<%=e.getId()%>"><%=e.getId()%>"></option>
+                                                    <% }%>
+                                                </select></td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <!--Button pada modal Insert-->
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
 
 
         </div>
@@ -197,25 +218,25 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
         <!-- script sidebar -->
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $("#sidebar").mCustomScrollbar({
-                    theme: "minimal"
-                });
-
-                $('#dismiss, .overlay').on('click', function () {
-                    $('#sidebar').removeClass('active');
-                    $('.overlay').removeClass('active');
-                });
-
-                $('#sidebarCollapse').on('click', function () {
-                    $('#sidebar').addClass('active');
-                    $('.overlay').addClass('active');
-                    $('.collapse.in').toggleClass('in');
-                    $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-                });
-            });
-        </script>
+        <!--        <script type="text/javascript">
+                    $(document).ready(function () {
+                        $("#sidebar").mCustomScrollbar({
+                            theme: "minimal"
+                        });
+        
+                        $('#dismiss, .overlay').on('click', function () {
+                            $('#sidebar').removeClass('active');
+                            $('.overlay').removeClass('active');
+                        });
+        
+                        $('#sidebarCollapse').on('click', function () {
+                            $('#sidebar').addClass('active');
+                            $('.overlay').addClass('active');
+                            $('.collapse.in').toggleClass('in');
+                            $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+                        });
+                    });
+                </script>-->
 
         <footer id="footer" class="footer">
             <div class="footer-copyright text-center py-3">© 2020 Copyright:
@@ -227,7 +248,7 @@
     </body>
 
     <% }
-        session.removeAttribute("sites");
+        session.removeAttribute("site");
 
     %>
 

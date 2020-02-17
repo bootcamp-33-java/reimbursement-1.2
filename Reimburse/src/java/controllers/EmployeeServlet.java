@@ -9,6 +9,18 @@ import daos.GeneralDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
+import java.util.List;
+import java.util.Properties;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +28,8 @@ import javax.servlet.http.HttpServlet;
 import models.Employee;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Account;
+import org.mindrot.jbcrypt.BCrypt;
 import tools.HibernateUtil;
 
 /**
@@ -26,6 +40,7 @@ import tools.HibernateUtil;
 public class EmployeeServlet extends HttpServlet {
 
     private GeneralDAO<Employee> edao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Employee.class);
+    private GeneralDAO<Account> adao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Account.class);
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,15 +51,61 @@ public class EmployeeServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private void sendMail(String firstname, String tokenn, String email) {
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", true);
+        props.put("mail.smtp.starttls.enable", true);
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("pandapanpan345@gmail.com", "yunpan1409");
+            }
+        });
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("pandapanpan345@gmail.com", false));
+
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+            message.setSubject("Verification Email");
+            message.setSentDate(new java.util.Date());
+
+            MimeBodyPart messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setContent("<meta charset=\"utf-8\">\n"
+                    + "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n"
+                    + "  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css\">\n"
+                    + "  <script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js\"></script>\n"
+                    + "  <script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js\"></script>\n"
+                    + "  <script src=\"https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js\"></script>"
+                    + "Dear  " + firstname + "<br>"
+                    + "please confirm your email to activation your account <br>"
+                    + "klik button bellow <br>"
+                    + " <br>"
+                    + " <br>"
+                    + " <a href=\"http://localhost:8084/Reimburse/register?action=verify&token=" + tokenn + "\" ><button type=\"button\" class=\"btn btn-outline-success btn-lg\" >Verify Account</button></a>"
+                    + " <br>",
+                    "text/html");
+
+            Multipart multipart = new MimeMultipart();
+            multipart.addBodyPart(messageBodyPart);
+            message.setContent(multipart);
+            Transport.send(message);
+        } catch (MessagingException e) {
+        }
+    }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
 
-            request.getSession().setAttribute("employee", edao.getData(null));
+            request.getSession().setAttribute("employee", edao.getAll());
             RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
             rd.include(request, response);
-//            response.sendRedirect("register.jsp");
 
         }
     }
@@ -92,6 +153,14 @@ public class EmployeeServlet extends HttpServlet {
             } else if (request.getParameter("action").equals("update")) {
                 Employee employee = edao.getById(request.getParameter("id"));
                 request.getSession().setAttribute("register", employee);
+            } else if (request.getParameter("action").equals("verify")) {
+                String token = request.getParameter("token");
+                List<Account> account = adao.getData(token);
+                for (Account ac : account) {
+                    ac.setIsVerify(true);
+                    adao.saveOrDelete(new Account(ac.getId(), ac.getPassword(), ac.getToken(), ac.getIsVerify(), new Employee(ac.getId())), false);
+                }
+
             }
         }
 
@@ -114,7 +183,9 @@ public class EmployeeServlet extends HttpServlet {
         String email = request.getParameter("employeeEmail");
         String phoneNumber = request.getParameter("employeePhoneNumber");
         String hireDate = request.getParameter("employeeHireDate");
-
+        String password = request.getParameter("accountPassword");
+        int n = 60;
+        String pass = BCrypt.hashpw(password, BCrypt.gensalt());
         PrintWriter out = response.getWriter();
         if (id != null && name != null && email != null && phoneNumber != null && hireDate != null) {
             out.println("<script src= 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'> </script>");
@@ -126,8 +197,11 @@ public class EmployeeServlet extends HttpServlet {
             if (!id.matches("[0-9]+")) {
                 out.println("swal ('Gagal !', 'Data gagal disimpan', 'error');");
             } else if (edao.saveOrDelete(new Employee(id, name, email, false, Date.valueOf(hireDate), phoneNumber), false)) {
+                adao.saveOrDelete(new Account(id, pass, EmployeeServlet.getAlphaNumericString(n), false, new Employee(id)), false);
+                sendMail(name, EmployeeServlet.getAlphaNumericString(n), email);
                 out.println("swal ('Sukses !', 'Data berhasil disimpan', 'success');");
             }
+//            public Account(String id, String password, String token, String isVerify, Employee employee) {
             out.println("});");
             out.println("</script>");
 
@@ -144,5 +218,31 @@ public class EmployeeServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    static String getAlphaNumericString(int n) {
+
+        // chose a Character random from this String 
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        // create StringBuffer size of AlphaNumericString 
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between 
+            // 0 to AlphaNumericString variable length 
+            int index
+                    = (int) (AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb 
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
+    }
 
 }
