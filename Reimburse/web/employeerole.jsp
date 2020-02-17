@@ -1,10 +1,12 @@
 <%-- 
-    Document   : employee
+    Document   : role
     Created on : Jan 30, 2020, 10:00:01 PM
     Author     : Insane
 --%>
 
 <%@page import="models.Employee"%>
+<%@page import="models.Role"%>
+<%@page import="models.EmployeeRole"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -13,25 +15,24 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Bootstrap CSS CDN -->
 
-
         <!-- Font Awesome JS -->
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
 
         <%@include file="/newDashboard/head.jsp" %>
-
-        <title>JSP Page</title>
     </head>
 
-
-
-    <% if (session.getAttribute("employee") == null) {
-            response.sendRedirect("register");
+    <% if (session.getAttribute("employeeroles") == null || session.getAttribute("roles") == null 
+            || session.getAttribute("employees") == null) {
+            response.sendRedirect("employeerole");
 
         } else {
-            List<Employee> employees = (List<Employee>) session.getAttribute("employee");
-//            Employee employee = (Employee) session.getAttribute("register");
+            List<EmployeeRole> emplrole = (List<EmployeeRole>) session.getAttribute("employeeroles");
+            List<Role> rol = (List<Role>) session.getAttribute("roles");
+            List<Employee> emp = (List<Employee>) session.getAttribute("employees");
+
     %>
+
 
 
 
@@ -44,10 +45,10 @@
         <br>
         <!--FORM SEARCH-->
         <div style="padding-left: 188px" class="container col-sm-10">
-            <form action="register" method="GET" class="form-inline">
+            <form action="employeerole" method="GET" class="form-inline">
                 <div class="form-group">
                     <!--Trigger/tombol modal insert-->
-                    <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#exampleModal" >
+                    <button type="button" class="btn btn-lg text-white" style="background-color: #ad4210"  data-toggle="modal" data-target="#exampleModal" >
                         Insert Data
                     </button>
                 </div>
@@ -55,52 +56,41 @@
         </div>
         <br>
 
-        <div style="padding-left: 6%; margin-right: 0%" class="container col-sm-10">
+        <div style="padding-left: 11%; margin-right: 5%" class="container col-sm-10">
 
-            <table  id="d_table" class="table table-hover">
+            <table id="d_table" class="table table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th>NO</th>
                         <th>ID</th>
-                        <th>NAME</th>
-                        <th>EMAIL</th>
-                        <th>IS ACTIVE</th>
-                        <th>PHONE NUMBER</th>
-                        <th>HIRE DATE</th>
+                        <th>EMPLOYEE</th>
+                        <th>ROLE</th>
                         <th>ACTION</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% int i = 1;
-                        for (Employee e : employees) {%>
+                        for (EmployeeRole r : emplrole) {%>
                     <tr>
                         <td><%= i++%></td>
-                        <td><%= e.getId()%></td>
-                        <td><%= e.getName()%></td>
-                        <td><%= e.getEmail()%></td>
-                        <td><%= e.getIsActive()%></td>
-                        <td><%= e.getPhoneNumber()%></td>
-                        <td><%= e.getHireDate()%></td>
+                        <td><%= r.getId()%></td>
+                        <td><%= r.getEmployee().getId()%></td>
+                        <td><%= r.getRole().getName()%></td>
+
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal<%
-                                out.print(e.getId());
-                                out.print(e.getName());
-                                out.print(e.getEmail());
-                                out.print(e.getIsActive());
-                                out.print(e.getPhoneNumber());
-                                out.print(e.getHireDate());
+                                out.print(r.getId());
+                                out.print(r.getEmployee().getId());
+                                out.print(r.getRole().getName());
+
                                     %>"><i class="fas fa-edit"></i></button>
-                            <a href="register?action=delete&id=<%=e.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
+                            <a href="employeerole?action=delete&id=<%=r.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
 
-                            <form action="register" method="POST">
+                            <form action="role" method="POST">
                                 <div class="modal fade" id="updateModal<%
-                                    out.print(e.getId());
-                                    out.print(e.getName());
-                                    out.print(e.getEmail());
-                                    out.print(e.getIsActive());
-                                    out.print(e.getPhoneNumber());
-                                    out.print(e.getHireDate());
-
+                                    out.print(r.getId());
+                                    out.print(r.getEmployee().getId());
+                                    out.print(r.getRole().getName());
 
                                      %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -116,31 +106,22 @@
                                                 <table border="0" >
                                                     <thead>
                                                         <tr>
-                                                            <th>Employee ID</th>
-                                                            <th><input type="text" readonly="" name="id" value="<% out.print(e.getId()); %>" /></th>
+                                                            <th>EMPLOYEE ROLE ID</th>
+                                                            <th><input type="text" readonly="" name="id" value="<% out.print(r.getId()); %>" /></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>Name</td>
-                                                            <td><input type="text" name="employeeName" value="<% out.print(e.getName()); %>" /></td>
+                                                            <td>EMPLOYEE NIK</td>
+                                                            <td><input type="text" name="employeeRoleId" value="<% out.print(r.getEmployee().getId()); %>" /></td>
                                                         </tr>
+                                                    </tbody>
+                                                    <tbody>
                                                         <tr>
-                                                            <td>Email</td>
-                                                            <td><input type="email" name="employeeEmail" value="<% out.print(e.getEmail()); %>" /></td>
+                                                            <td>ROLE NAME</td>
+                                                            <td><input type="text" name="employeeRoleName" value="<% out.print(r.getRole().getName()); %>" /></td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>IsActive</td>
-                                                            <td><input type="text" name="employeeIsActive" value="<% out.print(e.getIsActive()); %>" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Phone Number</td>
-                                                            <td><input type="text" name="employeePhoneNumber" value="<% out.print(e.getPhoneNumber()); %>" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Hire Data</td>
-                                                            <td><input type="date" name="employeeHireDate" value="<% out.print(e.getPhoneNumber()); %>" /></td>
-                                                        </tr>
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -154,7 +135,7 @@
                                 </div>
                             </form>
 
-                            <form action="register" method="POST">
+                            <form action="employeerole" method="POST">
 
                                 <!--Membuat class MODAL INSERT-->
                                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -173,31 +154,38 @@
                                                 <table border="0" >
                                                     <thead>
                                                         <tr>
-                                                            <th>Employee ID</th>
-                                                            <th><input type="text" name="id" value="" /></th>
+                                                            <th>EMPLOYEE ROLE ID</th>
+                                                            <th><input type="text" name="id" value="" />
+                                                            </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td>Employee Name</td>
-                                                            <td><input type="text" name="employeeName" value="" /></td>
+                                                            <td>ROLE NAME</td>
+                                                            <td>
+                                                                <select name="employeeroleId" class="select2_single form-control">
+                                                                    <option value="" disabled selected>Select your ROLE</option>
+                                                                    <% for (Role er : rol) {%>
+                                                                    <option value="<%=er.getId()%>"><%=er.getId() %></option>
+                                                                    <% }%>
+                                                                </select>
+                                                            </td>
                                                         </tr>
+
+                                                    </tbody>
+                                                    <tbody>
                                                         <tr>
-                                                            <td>Employee Phone Number</td>
-                                                            <td><input type="text" name="employeePhoneNumber" value="" /></td>
+                                                            <td>EMPLOYEE NIK</td>
+                                                            <td>
+                                                                <select name="employeeroleName" class="select2_single form-control">
+                                                                    <option value="" disabled selected>Select your NIK</option>
+                                                                    <% for (Employee er : emp) {%>
+                                                                    <option value="<%=er.getId()%>"><%=er.getId()%></option>
+                                                                    <% }%>
+                                                                </select>
+                                                            </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>Employee Hire Date</td>
-                                                            <td><input type="date" name="employeeHireDate" value="" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Employee Email</td>
-                                                            <td><input type="email" name="employeeEmail" value="" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Account Password</td>
-                                                            <td><input type="password" name="accountPassword" value="" /></td>
-                                                        </tr>
+
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -260,7 +248,9 @@
     </body>
 
     <% }
-        session.removeAttribute("employee");
+        session.removeAttribute("employeeroles");
+        session.removeAttribute("employees");
+        session.removeAttribute("roles");
 
     %>
 

@@ -36,6 +36,7 @@ public class ManualTestGeneral  {
         // ---------------------------------------- Deklarasi DAO ----------------------------------------//
 
         GeneralDAO<Employee> edao = new GeneralDAO<>(sessionFactory, Employee.class);
+        GeneralDAO<EmployeeRole> erdao = new GeneralDAO<>(sessionFactory, EmployeeRole.class);
         GeneralDAO<Role> roledao = new GeneralDAO<>(sessionFactory, Role.class);
         GeneralDAO<ParkingLot> pldao = new GeneralDAO<>(sessionFactory, ParkingLot.class);
         GeneralDAO<Vehicle> vdao = new GeneralDAO<>(sessionFactory, Vehicle.class);
@@ -56,6 +57,7 @@ public class ManualTestGeneral  {
         //            System.out.println(d.getLocation().getId() + "\n");
         //        }
         //SAVE OR DELETE
+        String id = "LAMgg";
 //        public Employee(String id, String name, String email, boolean isActive, Date hireDate, String phoneNumber) {
 //        Employee employee = new Employee("HERU", "bagus iini", "agung@sbb.com", false, Date.valueOf("2000-10-10"), "08232121232");
 ////        Employee employee2 = new Employee(16);

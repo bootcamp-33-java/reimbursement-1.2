@@ -8,27 +8,28 @@ package controllers;
 import daos.GeneralDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import models.Employee;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Account;
-import org.mindrot.jbcrypt.BCrypt;
+import models.Employee;
+import models.EmployeeRole;
+import models.Role;
 import tools.HibernateUtil;
 
 /**
  *
  * @author Insane
  */
-@WebServlet(name = "EmployeeServlet", urlPatterns = {"/register"})
-public class EmployeeServlet extends HttpServlet {
+@WebServlet(name = "EmployeeRoleServlet", urlPatterns = {"/employeerole"})
+public class EmployeeRoleServlet extends HttpServlet {
 
+    
+    private GeneralDAO<EmployeeRole> erdao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), EmployeeRole.class);
+    private GeneralDAO<Role> rdao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Role.class);
     private GeneralDAO<Employee> edao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Employee.class);
-    private GeneralDAO<Account> adao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Account.class);
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,11 +44,11 @@ public class EmployeeServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
-            request.getSession().setAttribute("employee", edao.getAll());
-            RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
+            request.getSession().setAttribute("employeeroles", erdao.getData(null));
+            request.getSession().setAttribute("roles", rdao.getData(null));
+            request.getSession().setAttribute("employees", edao.getData(null));
+            RequestDispatcher rd = request.getRequestDispatcher("employeerole.jsp");
             rd.include(request, response);
-
         }
     }
 
@@ -63,7 +64,6 @@ public class EmployeeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         PrintWriter out = response.getWriter();
         if (request.getParameter("action") != null && request.getParameter("id") != null) {
             if (request.getParameter("action").equals("delete")) {
@@ -83,7 +83,7 @@ public class EmployeeServlet extends HttpServlet {
                         + "    swal(\"Poof! Your imaginary file has been deleted!\", {\n"
                         + "      icon: \"success\",\n"
                         + "    });");
-                edao.saveOrDelete(new Employee(request.getParameter("id")), true);
+                erdao.saveOrDelete(new EmployeeRole(Integer.parseInt(request.getParameter("id"))), true);
                 out.println("} else {\n"
                         + "    swal(\"Your imaginary file is safe!\");\n"
                         + "  }");
@@ -92,8 +92,8 @@ public class EmployeeServlet extends HttpServlet {
                 out.println("});");
                 out.println("</script>");
             } else if (request.getParameter("action").equals("update")) {
-                Employee employee = edao.getById(request.getParameter("id"));
-                request.getSession().setAttribute("register", employee);
+                EmployeeRole er = erdao.getById(request.getParameter("id"));
+                request.getSession().setAttribute("employeerole", er);
             }
         }
 
@@ -111,34 +111,32 @@ public class EmployeeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String id = request.getParameter("id");
-        String name = request.getParameter("employeeName");
-        String email = request.getParameter("employeeEmail");
-        String phoneNumber = request.getParameter("employeePhoneNumber");
-        String hireDate = request.getParameter("employeeHireDate");
-        String password = request.getParameter("accountPassword");
-        int n = 60;
-        String pass = BCrypt.hashpw(password, BCrypt.gensalt());
+        String roleId = request.getParameter("employeeRoleId");
+        String name = request.getParameter("employeeRoleName");
         PrintWriter out = response.getWriter();
-        if (id != null && name != null && email != null && phoneNumber != null && hireDate != null) {
+        EmployeeRole er = new EmployeeRole(Integer.parseInt(id), new Employee(roleId), new Role(name));
+        if (id != null && name != null && roleId != null) {
             out.println("<script src= 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'> </script>");
             out.println("<script src= 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
             out.println("<script src= 'https://unpkg.com/sweetalert/dist/sweetalert.min.js'></script>");
             out.println("<script>");
             out.println("$(document).ready(function(){");
-
+            
+            
             if (!id.matches("[0-9]+")) {
                 out.println("swal ('Gagal !', 'Data gagal disimpan', 'error');");
-            } else if (edao.saveOrDelete(new Employee(id, name, email, false, Date.valueOf(hireDate), phoneNumber), false)) {
-                adao.saveOrDelete(new Account(id, pass, EmployeeServlet.getAlphaNumericString(n), "false", new Employee(id)), false);
+            } else if (erdao.saveOrDelete(er, false)) {
                 out.println("swal ('Sukses !', 'Data berhasil disimpan', 'success');");
             }
-//            public Account(String id, String password, String token, String isVerify, Employee employee) {
+           
             out.println("});");
             out.println("</script>");
 
         }
         processRequest(request, response);
+
     }
 
     /**
@@ -150,31 +148,5 @@ public class EmployeeServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
-    static String getAlphaNumericString(int n) {
-
-        // chose a Character random from this String 
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "0123456789"
-                + "abcdefghijklmnopqrstuvxyz";
-
-        // create StringBuffer size of AlphaNumericString 
-        StringBuilder sb = new StringBuilder(n);
-
-        for (int i = 0; i < n; i++) {
-
-            // generate a random number between 
-            // 0 to AlphaNumericString variable length 
-            int index
-                    = (int) (AlphaNumericString.length()
-                    * Math.random());
-
-            // add Character one by one in end of sb 
-            sb.append(AlphaNumericString
-                    .charAt(index));
-        }
-
-        return sb.toString();
-    }
 
 }
