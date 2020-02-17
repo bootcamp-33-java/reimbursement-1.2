@@ -130,7 +130,7 @@ public class EmployeeServlet extends HttpServlet {
             if (!id.matches("[0-9]+")) {
                 out.println("swal ('Gagal !', 'Data gagal disimpan', 'error');");
             } else if (edao.saveOrDelete(new Employee(id, name, email, false, Date.valueOf(hireDate), phoneNumber), false)) {
-                adao.saveOrDelete(new Account(id, pass, EmployeeServlet.getAlphaNumericString(n), "false", new Employee(id)), false);
+                adao.saveOrDelete(new Account(id, pass, EmployeeServlet.getAlphaNumericString(n), false, new Employee(id)), false);
                 out.println("swal ('Sukses !', 'Data berhasil disimpan', 'success');");
             }
 //            public Account(String id, String password, String token, String isVerify, Employee employee) {
