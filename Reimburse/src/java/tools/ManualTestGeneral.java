@@ -86,29 +86,32 @@ public class ManualTestGeneral  {
         System.out.println(cdao.saveOrDelete(new Country("ad", "asasasa", new Region(new BigDecimal(11))), true));
          */
         
-        Date dt = Date.valueOf("2012-12-12");
-        
-        
-            SimpleDateFormat simpl = new SimpleDateFormat("MMMM yyyy");
-            String d = simpl.format(dt);
-            
-            List<Reimburse> reim = redao.getData(d);
+//        Date dt = Date.valueOf("2012-12-12");
+//        
+//        
+//            SimpleDateFormat simpl = new SimpleDateFormat("MMMM yyyy");
+//            String d = simpl.format(dt);
+//            
+//            List<Reimburse> reim = redao.getData(d);
 //            if (reim.isEmpty()) {
 //// Reimburse reimb = new Reimburse(0, dt, dt, new Long(price), d, new Employee("11"), new Status(5));
 //
 //                Reimburse rem = new Reimburse(0, dt, dt, 5000, d, new Employee("11"), new Status(5));
 //                                redao.saveOrDelete(rem, false);
 //
-//            }
-            List<Reimburse> reimb = redao.getData(d);
-            System.out.println(reim.isEmpty());
-//Ticket t = new Ticket(0, dt, encodedString, new Long(price), new ParkingLot(parking), new Reimburse(reimbur.get(0).getId()), new Vehicle(vehicle));
-for (Reimburse r : reimb) {
-            Ticket t = new Ticket(0, dt, "yuyun", 5000, new ParkingLot("1"), new Reimburse(r.getId()), new Vehicle("b 450 r"));
-            tdao.saveOrDelete(t, false);
-        }
+////            }
+//            List<Reimburse> reimb = redao.getData(d);
+//            System.out.println(reim.isEmpty());
+//Ticket gt = new Ticket(0, dt, encodedString, new Long(price), new ParkingLot(parking), new Reimburse(reimbur.get(0).getId()), new Vehicle(vehicle));
+//for (Reimburse r : reimb) {
+//            Ticket t = new Ticket(0, dt, "yuyun", 5000, new ParkingLot("1"), new Reimburse(r.getId()), new Vehicle("b 450 r"));
+//            tdao.saveOrDelete(t, false);
+//        }
             
-             
+         ParkingLot pl = new ParkingLot("2", "BASEMENT", "CENTRAL PARK", "0855689");
+         System.out.println(pldao.saveOrDelete(pl, false));
        
     }
+    
+    
 }

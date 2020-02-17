@@ -146,7 +146,7 @@ public class ReimburseServlet extends HttpServlet {
 //            Employee empl = (Employee) request.getAttribute("idUser");
         List<Reimburse> reim = redao.getData(d);
         if (reim.isEmpty()) {
-            Reimburse reimb = new Reimburse(0, dt, dt, new Long(price), d, new Employee("11"), new Status(5));
+            Reimburse reimb = new Reimburse(0, dt, dt, new Long(0), d, new Employee("11"), new Status(5));
             redao.saveOrDelete(reimb, false);
         }
         List<Reimburse> reimbur = redao.getData(d);
@@ -154,7 +154,8 @@ public class ReimburseServlet extends HttpServlet {
         //insert to ticket
         BufferedImage image = ImageIO.read(filePart.getInputStream());
         for (Reimburse r : reimbur) {
-            Ticket t = new Ticket(0, dt, encodeToString(image, filePart.getContentType()), new Long(price), new ParkingLot(parking), new Reimburse(r.getId()), new Vehicle(vehicle));
+            Ticket t = new Ticket(0, dt, "yyyy", new Long(price), new ParkingLot(parking), new Reimburse(r.getId()), 
+                    new Vehicle(vehicle));
             tdao.saveOrDelete(t, false);
         }
 

@@ -48,7 +48,7 @@
             <form action="employeerole" method="GET" class="form-inline">
                 <div class="form-group">
                     <!--Trigger/tombol modal insert-->
-                    <button type="button" class="btn btn-lg text-white" style="background-color: #ad4210"  data-toggle="modal" data-target="#exampleModal" >
+                    <button type="button" class="btn btn-lg text-white" style="background-color: #ad4210"  data-toggle="modal" data-target="#exampleModalLabel" >
                         Insert Data
                     </button>
                 </div>
@@ -80,8 +80,7 @@
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal<%
                                 out.print(r.getId());
-                                out.print(r.getEmployee().getId());
-                                out.print(r.getRole().getName());
+                         
 
                                     %>"><i class="fas fa-edit"></i></button>
                             <a href="employeerole?action=delete&id=<%=r.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
@@ -89,8 +88,7 @@
                             <form action="role" method="POST">
                                 <div class="modal fade" id="updateModal<%
                                     out.print(r.getId());
-                                    out.print(r.getEmployee().getId());
-                                    out.print(r.getRole().getName());
+                            
 
                                      %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">

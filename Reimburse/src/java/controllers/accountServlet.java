@@ -46,7 +46,7 @@ public class accountServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             if (isTrue) {
-                response.sendRedirect("dashboard.jsp");
+                response.sendRedirect("reimburse.jsp");
             } else {
                 response.sendRedirect("login.jsp");
             }

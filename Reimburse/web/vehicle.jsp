@@ -40,7 +40,7 @@
         <title>JSP Page</title>
     </head>
 
-    <% if (session.getAttribute("vehicles") == null || session.getAttribute("employees") == null) {
+    <% if (session.getAttribute("vehicles") == null) {
             response.sendRedirect("vehicle");
 
         } else {
@@ -75,6 +75,7 @@
                         <th>STNK OWNER</th>
                         <th>STNK PHOTO</th>
                         <th>VEHICLE TYPE</th>
+                        <th>VEHICLE OWNER</th>
                         <th>ACTION</th>
                     </tr>
                 </thead>
@@ -87,6 +88,7 @@
                         <td><%= v.getStnkOwner()%></td>
                         <td><%= v.getPhotoStnk()%></td>
                         <td><%= v.getVehicleType()%></td>
+                        <td><%=v.get
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal<%
                                 out.print(v.getId());

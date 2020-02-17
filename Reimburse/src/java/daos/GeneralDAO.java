@@ -66,7 +66,6 @@ public class GeneralDAO<T> {
                 }
             }
             hql = hql.substring(0,hql.length()-3);
-            System.out.println(hql);
             Query query = session.createQuery(hql);
             ts = query.list();
         } catch (Exception e) {
