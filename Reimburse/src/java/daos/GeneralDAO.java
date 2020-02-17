@@ -5,6 +5,7 @@
  */
 package daos;
 
+import java.lang.reflect.Field;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -20,10 +21,10 @@ import org.hibernate.HibernateException;
  */
 public class GeneralDAO<T> {
 
-    protected Session session;
-    protected Transaction transaction;
-    protected SessionFactory sessionFactory;
-    protected T t;
+    Session session;
+    Transaction transaction;
+    SessionFactory sessionFactory;
+    private T t;
 
     public GeneralDAO(SessionFactory sessionFactory, Class<T> t) {
         try {
@@ -47,6 +48,34 @@ public class GeneralDAO<T> {
             if (transaction != null) {
                 transaction.rollback();
             }
+        }
+        return ts;
+    }
+    
+    public List<T> getData(Object key) {
+        List<T> ts = new ArrayList<>();
+        session = this.sessionFactory.openSession();
+        transaction = session.beginTransaction();
+        List<String> listnya = new ArrayList<>();
+        try {
+            String hql = "FROM " + t.getClass().getSimpleName() + (key == null ? "   " : " WHERE ");
+            for (Field field : t.getClass().getDeclaredFields()) {
+                if (!field.getName().matches(".*(List|UID)") && key != null) {
+                    hql = hql + "LOWER(" + field.getName() + ") LIKE LOWER('%"+ key+ "%') OR ";
+					
+                }
+            }
+            hql = hql.substring(0,hql.length()-3);
+            System.out.println(hql);
+            Query query = session.createQuery(hql);
+            ts = query.list();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }finally{
+            session.close();
         }
         return ts;
     }

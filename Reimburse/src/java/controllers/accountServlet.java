@@ -9,18 +9,6 @@ import daos.EmployeeDAO;
 import daos.GeneralDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.util.Properties;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Multipart;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
-import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,44 +40,7 @@ public class accountServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    // to send email
-    private void sendMail(String firstname, String lastname, String token, String email) {
-
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", true);
-        props.put("mail.smtp.starttls.enable", true);
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("yunyunyupa@gmail.com", "pass");
-            }
-        });
-        try {
-
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("yunyunyupa@gmail.com", false));
-
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
-            message.setSubject("Verification Email");
-            message.setSentDate(new Date());
-
-            MimeBodyPart messageBodyPart = new MimeBodyPart();
-            messageBodyPart.setContent("Dear  " + firstname + " " + lastname + "<br>"
-                    + "<br>"
-                    + " ",
-                    "text/html");
-
-            Multipart multipart = new MimeMultipart();
-            multipart.addBodyPart(messageBodyPart);
-            message.setContent(multipart);
-            Transport.send(message);
-        } catch (MessagingException e) {
-        }
-    }
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -140,15 +91,8 @@ public class accountServlet extends HttpServlet {
         if (employee != null && BCrypt.checkpw(password, employee.getAccount().getPassword())) {
             isTrue = true;
         }
-//        <<<< Tambahan Dari FIkri Method change password >>>>
-        int n = 60;
-        String id = request.getParameter("id");
-
-        String pass = BCrypt.hashpw(password, BCrypt.gensalt());
-        PrintWriter out = response.getWriter();
-        adao.saveOrDelete(new Account(id, pass, EmployeeServlet.getAlphaNumericString(n), false, new Employee(id)), false);
-
-//            public Account(String id, String password, String token, String isVerify, Employee employee) {
+        
+        request.setAttribute("idUser", employee);
         processRequest(request, response);
 
     }

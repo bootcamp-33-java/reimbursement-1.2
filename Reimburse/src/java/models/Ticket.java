@@ -74,13 +74,17 @@ public class Ticket implements Serializable {
         this.id = id;
     }
 
-    public Ticket(Integer id, Date uploadDate, String photoTicket, long price) {
+    public Ticket(Integer id, Date uploadDate, String photoTicket, long price, ParkingLot parkingLot, Reimburse reimburse, Vehicle vehicle) {
         this.id = id;
         this.uploadDate = uploadDate;
         this.photoTicket = photoTicket;
         this.price = price;
+        this.parkingLot = parkingLot;
+        this.reimburse = reimburse;
+        this.vehicle = vehicle;
     }
 
+  
     public Integer getId() {
         return id;
     }

@@ -79,7 +79,7 @@ public class Employee implements Serializable {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "employee", fetch = FetchType.LAZY)
     private Account account;
     
-    @JoinColumn(name = "SITE", referencedColumnName = "ID")
+    @JoinColumn(name = "SITE", referencedColumnName = "ID", nullable = true)
     @ManyToOne(fetch = FetchType.LAZY)
     private Site site;
     
@@ -221,7 +221,7 @@ public class Employee implements Serializable {
         return "models.Employee[ id=" + id + " ]";
     }
 
-
+  
 
     @XmlTransient
     public List<Vehicle> getVehicleList() {

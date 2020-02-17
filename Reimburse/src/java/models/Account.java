@@ -77,6 +77,7 @@ public class Account implements Serializable {
         this.isVerify = isVerify;
     }
 
+
     public String getId() {
         return id;
     }
@@ -141,5 +142,5 @@ public class Account implements Serializable {
     public String toString() {
         return "models.Account[ id=" + id + " ]";
     }
-    
+
 }

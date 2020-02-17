@@ -62,7 +62,6 @@ public class Reimburse implements Serializable {
     @Column(name = "TOTAL")
     private long total;
     
-    @Basic(optional = false)
     @Column(name = "NOTES")
     private String notes;
     
@@ -91,14 +90,17 @@ public class Reimburse implements Serializable {
         this.id = id;
     }
 
-    public Reimburse(Integer id, Date startDate, Date endDate, long total, String notes, String period) {
+    public Reimburse(Integer id, Date startDate, Date endDate, long total, String period, Employee employee, Status currentStatus) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
         this.total = total;
-        this.notes = notes;
         this.period = period;
+        this.employee = employee;
+        this.currentStatus = currentStatus;
     }
+
+  
 
     public Integer getId() {
         return id;

@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author FIKRI-PC
+ * @author yuyun
  */
 @Entity
 @Table(name = "VEHICLE")
@@ -34,19 +34,15 @@ public class Vehicle implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private String id;
-    
     @Basic(optional = false)
     @Column(name = "STNK_OWNER")
     private String stnkOwner;
-    
     @Basic(optional = false)
     @Column(name = "PHOTO_STNK")
     private String photoStnk;
-    
     @Basic(optional = false)
     @Column(name = "VEHICLE_TYPE")
     private String vehicleType;
-    
     @JoinColumn(name = "EMPLOYEE", referencedColumnName = "ID")
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Employee employee;
@@ -65,6 +61,7 @@ public class Vehicle implements Serializable {
         this.vehicleType = vehicleType;
         this.employee = employee;
     }
+
 
 
     public String getId() {
