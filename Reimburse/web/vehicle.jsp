@@ -45,7 +45,6 @@
 
         } else {
             List<Vehicle> vehiclees = (List<Vehicle>) session.getAttribute("vehicles");
-            List<Employee> employees = (List<Employee>) session.getAttribute("employees");
             Vehicle vehicle = (Vehicle) session.getAttribute("vehicle");
     %>
 
@@ -72,11 +71,10 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>NO</th>
-                        <th>ID</th>
+                        <th>PLAT NUMBER</th>
                         <th>STNK OWNER</th>
-                        <th>PHOTO STNK</th>
+                        <th>STNK PHOTO</th>
                         <th>VEHICLE TYPE</th>
-                        <th>NIK</th>
                         <th>ACTION</th>
                     </tr>
                 </thead>
@@ -89,24 +87,15 @@
                         <td><%= v.getStnkOwner()%></td>
                         <td><%= v.getPhotoStnk()%></td>
                         <td><%= v.getVehicleType()%></td>
-                        <td><%= v.getEmployee()%></td>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal<%
                                 out.print(v.getId());
-                                out.print(v.getStnkOwner());
-                                out.print(v.getVehicleType());
-                                out.print(v.getPhotoStnk());
-                                out.print(v.getEmployee());
                                     %>"><i class="fas fa-edit"></i></button>
                             <a href="vehicle?action=delete&id=<%=v.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
 
                             <form action="vehicle" method="POST">
                                 <div class="modal fade" id="updateModal<%
                                     out.print(v.getId());
-                                    out.print(v.getStnkOwner());
-                                    out.print(v.getVehicleType());
-                                    out.print(v.getPhotoStnk());
-                                    out.print(v.getEmployee());
                                      %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
@@ -122,7 +111,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th>ID</th>
-                                                            <th><input type="text" readonly="" name="id" value="<% out.print(v.getId()); %>"  /></th>
+                                                            <th><input type="text" readonly="readonly" name="id" value="<% out.print(v.getId()); %>"  /></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -138,16 +127,6 @@
                                                             <td>Vehicle Type</td>
                                                             <td><input type="text" name="type" value="<% out.print(v.getVehicleType()); %>" /></td>
                                                         </tr>
-                                                        <tr>
-                                                            <td>NIK</td>
-                                                            <td> 
-                                                                <select id="nik" name="nik" class="input-field" >
-                                                                    <% for (Employee e : employees) {%>
-                                                                    <option value="<%=e.getId()%>"><%=e.getId()%>"></option>
-                                                                    <% }%>
-                                                                </select></td>
-                                                        </tr>
-
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -184,7 +163,7 @@
                                 <table border="0" >
                                     <tbody>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>PLAT NUMBER</th>
                                             <th><input type="text" name="id" value="" /></th>
                                         </tr>
                                         </thead>
@@ -207,15 +186,6 @@
                                                 <label for="motorcycle">Motorcycle</label>
                                                 <input type="radio" id="car" name="type" value="car">
                                                 <label for="car">Car</label></td>
-                                        </tr>
-                                        <tr>
-                                            <td>NIK</td>
-                                            <td> 
-                                                <select id="nik" name="nik" class="input-field" >
-                                                    <% for (Employee e : employees) {%>
-                                                    <option value="<%=e.getId()%>"><%=e.getId()%></option>
-                                                    <% }%>
-                                                </select></td>
                                         </tr>
                                     </tbody>
                                 </table>

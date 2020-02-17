@@ -4,6 +4,8 @@
     Author     : Insane
 --%>
 
+<%@page import="models.Vehicle"%>
+<%@page import="models.ParkingLot"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="models.Ticket"%>
 <%@page import="models.Employee"%>
@@ -46,6 +48,8 @@
 
         } else {
             List<Ticket> tickets = (List<Ticket>) session.getAttribute("reimburses");
+            List<ParkingLot> parklot = (List<ParkingLot>) session.getAttribute("parklots");
+            List<Vehicle> vehicles = (List<Vehicle>) session.getAttribute("vehicles");
     %>
 
 
@@ -58,14 +62,14 @@
         <br>
         <!--FORM SEARCH-->
         <div class="container col-sm-10">
-            <form action="register" method="GET" class="form-inline">
-                <div class="form-group">
-                    <!--Trigger/tombol modal insert-->
-                    <button type="button" class="btn btn-lg"  data-toggle="modal" data-target="#applyModal" >
-                        Apply Reimburse
-                    </button>
-                </div>
-            </form>
+
+            <div class="form-group">
+                <!--Trigger/tombol modal insert-->
+                <button type="button" class="btn btn-lg text-white" style="background-color: #be0e0e"  data-toggle="modal" data-target="#applyModal" >
+                    Apply Reimburse
+                </button>
+            </div>
+
         </div>
         <br>
 
@@ -90,7 +94,7 @@
                         <td><%= i++%></td>
 
                         <%try {
-                                SimpleDateFormat simple = new SimpleDateFormat("dd MMMM yyyy hh:mm:ss");%>
+                                SimpleDateFormat simple = new SimpleDateFormat("dd MMMM yyyy");%>
                         <td><%= simple.format(t.getUploadDate())%></td>
                         <%
                             } catch (Exception e) {
@@ -105,9 +109,9 @@
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal<%
                                 out.print(t.getId());
                                     %>"><i class="fas fa-edit"></i></button>
-                            <a href="register?action=delete&id=<%=t.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
+                            <a href="reimburse?action=delete&id=<%=t.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
 
-                            <form action="register" method="POST">
+                            <form action="reimburse" method="POST">
                                 <div class="modal fade" id="updateModal<%
                                     out.print(t.getId());
                                      %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -143,15 +147,26 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Price</td>
-                                                            <td><input type="text" name="price" value="<% out.print(t.getPrice()); %>" /></td>
+                                                            <td><input type="text" name="price" value="<% out.print(t.getPrice());%>" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Parking Lot</td>
-                                                            <td><input type="text" name="parking" value="<% out.print(t.getParkingLot().getName()); %>" /></td>
+                                                            <td><select name="parking"   id="parking" class="custom-select">
+                                                                    <option selected value="<%=t.getParkingLot().getId()%>"><%=t.getParkingLot().getName()%></option>
+                                                                    <%for (ParkingLot p : parklot) {%>
+                                                                    <option value="<%=p.getId()%>"><%=p.getLocation()%></option>
+                                                                    <% }%>
+                                                                </select>
+                                                            </td>
                                                         </tr>
                                                         <tr>
                                                             <td>Vehicle</td>
-                                                            <td><input type="text" name="vehicle" value="<% out.print(t.getVehicle().getVehicleType()); %>" /></td>
+                                                            <td><select name="vehicle"   id="vehicle" class="custom-select">
+                                                                    <option selected value="<%=t.getVehicle().getId()%>"><%=t.getVehicle().getVehicleType()+" "+t.getVehicle().getId()%></option>
+                                                                    <%for (Vehicle v : vehicles) {%>
+                                                                    <option value="<%=v.getId()%>"><%=v.getVehicleType()+" "+v.getId()%></option>
+                                                                    <% }%>
+                                                                </select></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -176,7 +191,7 @@
             </table>
         </div>
 
-        <form action="register" method="POST" enctype="multipart/form-data">
+        <form action="reimburse" method="POST" enctype="multipart/form-data">
 
             <!--Membuat class MODAL INSERT-->
             <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -194,43 +209,50 @@
                             <!--Isi method Insert Modal-->
                             <table border="0" >
                                 <tbody>
-                                    
+
                                     <tr>
                                         <td>Date</td>
-                                        <td><input type="datetime" name="date" value="" /></td>
+                                        <td><input class="form-control" type="date" name="date" value="" /></td>
                                     </tr>
-                                
+
                                     <tr>
                                         <td>Ticket Photo</td>
-                                        <td><input type="file" name="photo" value="" /></td>
+                                        <td><input class="form-control" id="customFile" type="file" name="photo" value="" /></td>
                                     </tr>
                                     <tr>
                                         <td>Price</td>
-                                        <td><input type="text" name="price" value="" /></td>
+                                        <td><input class="form-control" type="text" name="price" value="" /></td>
                                     </tr>
 
                                     <tr>
                                         <td>Parking Lot</td>
                                         <td>
-                                            <%-- <select name="job"   class="custom-select">
-                                    <option selected>Select Job</option>
-                                    <%for (Job j : jobs) {%>
-                                    <option value="<%=j.getId()%>"><%=j.getTitle()%></option>
-                                    <% }%>
-                                </select> --%>
+                                            <select name="parking"   id="parking" class="custom-select">
+                                                <option selected>Select Parking Lot</option>
+                                                <%for (ParkingLot p : parklot) {%>
+                                                <option value="<%=p.getId()%>"><%=p.getLocation()%></option>
+                                                <% }%>
+                                            </select>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Employee Hire Date</td>
-                                        <td><input type="date" name="employeeHireDate" value="" /></td>
+                                        <td>Vehicle</td>
+                                        <td>
+                                            <select name="vehicle" id="vehicle"  class="custom-select">
+                                                <option selected>Select Vehicle</option>
+                                                <%for (Vehicle v : vehicles) {%>
+                                                <option value="<%=v.getId()%>"><%=v.getVehicleType() + " " + v.getId()%></option>
+                                                <% }%>
+                                            </select>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                         <div class="modal-footer">
                             <!--Button pada modal Insert-->
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save </button>
+                            <button type="button" class="btn btn-sm text-white" style="background-color: #776969" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-sm text-white" style="background-color: #be0e0e">Save </button>
                         </div>
                     </div>
                 </div>
@@ -262,6 +284,7 @@
                 });
             });
         </script>
+
 
         <footer id="footer" class="footer">
             <div class="footer-copyright text-center py-3">© 2020 Copyright:
