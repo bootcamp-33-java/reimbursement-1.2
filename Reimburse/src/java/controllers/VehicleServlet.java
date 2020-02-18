@@ -43,13 +43,12 @@ public class VehicleServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             Employee empl = (Employee) request.getAttribute("idUser");
-            
-            request.getSession().setAttribute("vehicles", vdao.getData(empl.getId()));
-            
+            request.getSession().setAttribute("vehicles", vdao.getData(null));
+//            request.getSession().setAttribute("vehicles", vdao.getAll());
             RequestDispatcher rd = request.getRequestDispatcher("vehicle.jsp");
             rd.include(request, response);
 
-            /* TODO output your page here. You may use following sample code. */
+           
         }
     }
 
@@ -76,8 +75,7 @@ public class VehicleServlet extends HttpServlet {
                 
                 Vehicle vehicle = vdao.getById(request.getParameter("id"));
                 request.getSession().setAttribute("vehicles", vehicle);
-                
-            }
+              }
         }
         processRequest(request, response);
     }

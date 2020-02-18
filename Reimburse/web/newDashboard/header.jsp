@@ -10,7 +10,7 @@
 
 
     <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light peach-gradient-rgba scrolling-navbar">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light purple-gradient-rgba scrolling-navbar">
         <div class="container-fluid">
 
             <!-- Collapse -->
@@ -25,18 +25,21 @@
                 <!-- Left -->
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link waves-effect" href="#">Home
+                        <a class="hoverable text-light nav-link waves-effect" href="home.jsp">Home
                             <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link waves-effect" href="https://mdbootstrap.com/material-design-for-bootstrap/" target="_blank">About MDB</a>
+                        <a class="hoverable text-light nav-link waves-effect" href="reimburse.jsp" target="_blank">Reimburse</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link waves-effect" href="https://mdbootstrap.com/getting-started/" target="_blank">Free download</a>
+                        <a class="hoverable text-light nav-link waves-effect" href="pic.jsp" target="_blank">Approval PIC</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link waves-effect" href="https://mdbootstrap.com/bootstrap-tutorial/" target="_blank">Free tutorials</a>
+                        <a class="hoverable text-light nav-link waves-effect" href="manager.jsp" target="_blank">Approval Manager</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="hoverable text-light nav-link waves-effect" href="vehicle.jsp" target="_blank">Vehicle Data</a>
                     </li>
                 </ul>
 
@@ -58,24 +61,28 @@
     <!-- Navbar -->
 
     <!-- Sidebar -->
-    <div class="sidebar-fixed peach-gradient-rgba position-fixed">
+    <div class="sidebar-fixed purple-gradient-rgba position-fixed">
 
-        <a class="logo-wrapper waves-effect">
+        <a href="home.jsp" class="logo-wrapper waves-effect">
             <img src="dist/iniParking.png"  class="img-fluid" style="width:100%;height:100%" alt="">
         </a>
 
         <div class="list-group list-group-flush">
-            <a href="http://localhost:8084/Reimburse/register" class="list-group-item active waves-effect">
+            <a href="http://localhost:8084/Reimburse/register" class="hoverable list-group-item active waves-effect">
                 <i class="fa fa-pie-chart mr-3"></i>Register
             </a>
-            <a href="http://localhost:8084/Reimburse/role" class="list-group-item list-group-item-action waves-effect">
+            <a href="http://localhost:8084/Reimburse/role" class="hoverable list-group-item list-group-item-action waves-effect">
                 <i class="fa fa-user mr-3"></i>Role</a>
-            <a href="#" class="list-group-item list-group-item-action waves-effect">
-                <i class="fa fa-table mr-3"></i>Tables</a>
-            <a href="#" class="list-group-item list-group-item-action waves-effect">
-                <i class="fa fa-map mr-3"></i>Maps</a>
-            <a href="#" class="list-group-item list-group-item-action waves-effect">
-                <i class="fa fa-money mr-3"></i>Orders</a>
+            <a href="vehicle.jsp" class="hoverable list-group-item list-group-item-action waves-effect">
+                <i class="fa fa-table mr-3"></i>Vehicle Data</a>
+            <a href="employeerole.jsp" class="hoverable list-group-item list-group-item-action waves-effect">
+                <i class="fa fa-map mr-3"></i>Employee Role</a>
+            <a href="reimburse.jsp" class="hoverable list-group-item list-group-item-action waves-effect">
+                <i class="fa fa-money mr-3"></i>Reimburse</a>
+            <a href="pic.jsp" class="hoverable list-group-item list-group-item-action waves-effect">
+                <i class="fa fa-money mr-3"></i>Approval PIC</a>
+            <a href="manager.jsp" class="hoverable list-group-item list-group-item-action waves-effect">
+                <i class="fa fa-money mr-3"></i>Approval Manager</a>
         </div>
 
     </div>

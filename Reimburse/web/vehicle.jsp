@@ -40,7 +40,7 @@
         <title>JSP Page</title>
     </head>
 
-    <% if (session.getAttribute("vehicles") == null || session.getAttribute("employees") == null) {
+    <% if (session.getAttribute("vehicles") ==null) {
             response.sendRedirect("vehicle");
 
         } else {
@@ -240,7 +240,7 @@
     </body>
 
     <% }
-        session.removeAttribute("employee");
+        session.removeAttribute("vehicle");
 
     %>
 
