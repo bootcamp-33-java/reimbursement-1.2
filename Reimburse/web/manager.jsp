@@ -40,15 +40,12 @@
         </script>
         <title>JSP Page</title>
     </head>
-    <!------ INI SESSION NYA BELUM YUN----->
-    <%  if (session.getAttribute("reimburses") == null || session.getAttribute("employees") == null || session.getAttribute("status") == null) {
-            response.sendRedirect("pic");
+    <%  if (session.getAttribute("msfcs") == null) {
+            response.sendRedirect("manager");
 //
         } else {
-            List<Reimburse> reimbursees = (List<Reimburse>) session.getAttribute("reimburses");
-            List<Employee> employeees = (List<Employee>) session.getAttribute("employees");
-            List<Status> statusees = (List<Status>) session.getAttribute("statuses");
-            Reimburse reimburse = (Reimburse) session.getAttribute("reimburse");
+            List<Reimburse> reimbursees = (List<Reimburse>) session.getAttribute("msfcs");
+
     %>
 
 
@@ -59,119 +56,127 @@
         <br>
         <br>
         <br>
+        <div class="container text-center" ><p style="font-size: 25px; font-style: normal;padding-top: 1%">Approve Reimburse Data</p>
+        </div>
+        <div class="container col-sm-10" style=" padding-top: 2%  ">
 
-       
-          
-
-            <div class="container col-sm-10" style="padding-left:8%; padding-top: 2%  ">
-
-                <table id="d_table" class="table table-striped">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>NO</th>
-                            <th>ID Reimburse</th>
-                            <th>NIK</th>
-                            <th>NAME</th>
-                            <th>PERIOD</th>
-                            <th>TOTAL</th>
-                            <th>NOTES</th>
-                            <th>ACTION</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% int i = 1;
+            <table id="d_table" class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>NO</th>
+                        <th>EMPLOYEE</th>
+                        <th>PERIOD</th>
+                        <th>TOTAL</th>
+                        <th>NOTES</th>
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% int i = 1;
                             for (Reimburse r : reimbursees) {%>
-                        <tr>
-                            <td><%= i++%></td>
-                            <td><%= r.getId()%></td>
-                            <td><%= r.getEmployee()%></td>
-                            <td><%= r.getEmployee()%></td>
-                            <td><%= r.getPeriod()%></td>
-                            <td><%= r.getTotal()%></td>
-                            <td><%= r.getNotes()%></td>
-                            <td>
-                                <!--REJECTED DAN APPROVED-->
+                    <tr>
+                        <td><%= i++%></td>
+                        <td><%= r.getEmployee().getId() + " - " + r.getEmployee().getName()%></td>
+                        <td><%= r.getPeriod()%></td>
+                        <td><%= r.getTotal()%></td>
+                        <td><%= r.getNotes()%></td>
+                        <td>
+                            <!--REJECTED DAN APPROVED-->
 
-                                <a href="reimburse?action=approved&id=<%=r.getId()%>" ><button type="button" class="btn btn-danger btn-sm">Approved</button></a>
-                                <a href="reimburse?action=rejected&id=<%=r.getId()%>" ><button type="button" class="btn btn-danger btn-sm">Rejected</button></a>
-                                <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal">  Notes </button>
+                            <button data-toggle="modal" data-target="#updateModalapproved" type="button" class="btn btn-success btn-sm">Approved</button></a>
+                            <button data-toggle="modal" data-target="#updateModalreject"type="button" class="btn btn-danger btn-sm">Rejected</button></a>
 
-                                <form action="reimburse" method="POST">
-                                    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog" role="document">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLabel">Notes</h5>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                    </button>
-                                                </div>
+                            <form action="manager?action=approved" method="POST">
+                                <div class="modal fade" id="updateModalapproved" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Give a Notes</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
 
-                                                <div class="modal-body">
-                                                    <table border="0" >
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Notes</th>
-                                                                <th><input type="text"  name="notes" value="<% out.print(r.getNotes()); %>"  /></th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>Input Notes for employee</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <!--Button Update pada modal Update-->
-                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                    <button type="submit" class="btn btn-primary">Add </button>
-                                                </div>
+                                            <div class="modal-body">
+                                                <table border="0" >
+
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Notes</td>
+                                                            <td><textarea rows="4" cols="40" name="note" value="<% out.print(r.getNotes() == null ? "" : r.getNotes()); %>" ></textarea></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2"><input type="hidden" readonly=""  name="id" value="<% out.print(r.getId()); %>"  /></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <!--Button Update pada modal Update-->
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Add </button>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                            </td>
-                        </tr>
-                        <% }%>
-                    </tbody>
-                </table>
+                                </div>
+                            </form>
+
+                            <!--modal reject-->
+                            <form action="manager?action=reject" method="POST">
+                                <div class="modal fade" id="updateModalreject" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Give a Notes</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <table border="0" >
+
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Notes</td>
+                                                            <td><textarea rows="4" cols="40" name="note" value="<% out.print(r.getNotes() == null ? "" : r.getNotes()); %>" ></textarea></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td colspan="2"><input type="hidden" readonly=""  name="id" value="<% out.print(r.getId()); %>"  /></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <!--Button Update pada modal Update-->
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Add </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }%>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- script sidebar -->
+        <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+  
+
+        <!-- Footer -->
+        <footer class="fixed-bottom py-5 bg-dark "style="padding-top: 0rem!important; padding-bottom: 1rem!important">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &team; Reimbursement 2020</p>
             </div>
-
-            <!-- script sidebar -->
-            <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-            <!-- script sidebar -->
-
-            <!--        <script type="text/javascript">
-                        $(document).ready(function () {
-                            $("#sidebar").mCustomScrollbar({
-                                theme: "minimal"
-                            });
-            
-                            $('#dismiss, .overlay').on('click', function () {
-                                $('#sidebar').removeClass('active');
-                                $('.overlay').removeClass('active');
-                            });
-            
-                            $('#sidebarCollapse').on('click', function () {
-                                $('#sidebar').addClass('active');
-                                $('.overlay').addClass('active');
-                                $('.collapse.in').toggleClass('in');
-                                $('a[aria-expanded=true]').attr('aria-expanded', 'false');
-                            });
-                        });
-                    </script>-->
-
-              <!-- Footer -->
-  <footer class="fixed-bottom py-5 bg-dark "style="padding-top: 0rem!important; padding-bottom: 1rem!important">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &team; Reimbursement 2020</p>
-    </div>
-    <!-- /.container -->
-  </footer>
+            <!-- /.container -->
+        </footer>
 
 
     </body>

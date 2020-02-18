@@ -97,16 +97,10 @@ public class EmployeeServlet extends HttpServlet {
             } else if (request.getParameter("action").equals("update")) {
                 Employee employee = edao.getById(request.getParameter("id"));
                 request.getSession().setAttribute("register", employee);
-            } else if (request.getParameter("action").equals("verify")) {
-                String token = request.getParameter("token");
-                List<Account> account = adao.getData(token);
-                for (Account ac : account) {
-                    ac.setIsVerify(true);
-                    adao.saveOrDelete(new Account(ac.getId(), ac.getPassword(), ac.getToken(), ac.getIsVerify(), new Employee(ac.getId())), false);
-                }
+            }
 
             }
-        }
+        
 
         processRequest(request, response);
     }
@@ -145,7 +139,7 @@ public class EmployeeServlet extends HttpServlet {
 
             if (!id.matches("[0-9]+")) {
                 out.println("swal ('Gagal !', 'Data gagal disimpan', 'error');");
-            } else if (edao.saveOrDelete(new Employee(id, name, email, false, Date.valueOf(hireDate), phoneNumber), false)) {
+            } else if (edao.saveOrDelete(new Employee(id, name, email, true, Date.valueOf(hireDate), phoneNumber), false)) {
                 adao.saveOrDelete(new Account(id, pass, tokenn, false, new Employee(id)), false);
         JavaMailUtil.sendMail(name,email, "http://localhost:8084/Reimburse/login?token=" +tokenn);
 

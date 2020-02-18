@@ -57,7 +57,7 @@
         <br>
 
         <div class="container text-center" style="font-size: 25px; font-style: normal;padding-top: 1%"><p>Vehicle Data</p></div>
-        <div class="container col-sm-10" style="padding-left:562px; padding-top: 2%">
+        <div class="container col-sm-10 text-center" style=" padding-top: 2%">
             <!--Trigger/tombol moedal insert-->
             <button type="button" class="btn btn-lg text-white" style="background-color: #be0e0e"  data-toggle="modal" data-target="#insertModal" >
                 Insert Data
@@ -65,7 +65,7 @@
         </div>
         
 
-        <div class="container col-sm-10" style="padding-left:8%; padding-top: 2%  ">
+        <div class="container col-sm-10" style=" padding-top: 2%  ">
 
             <table id="d_table" class="table table-striped">
                 <thead class="thead-dark">

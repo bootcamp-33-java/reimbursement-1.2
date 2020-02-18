@@ -43,7 +43,7 @@
         <title>JSP Page</title>
     </head>
 
-    <% if (session.getAttribute("reimburses") == null) {
+    <% if (session.getAttribute("reimburses") == null || session.getAttribute("vehicles") == null || session.getAttribute("parklots") == null ) {
             response.sendRedirect("reimburse");
 
         } else {
@@ -61,18 +61,23 @@
         <br>
         <br>
         <!--FORM SEARCH-->
-        <div class="container text-center" style="font-size: 25px; font-style: normal;padding-top: 1%"><p>Vehicle Data</p></div>
-        <div class="container col-sm-10" style="padding-left:535px; padding-top: 2%">
-                <!--Trigger/tombol modal insert-->
-                <button type="button" class="btn btn-lg text-white" style="background-color: #be0e0e"  data-toggle="modal" data-target="#applyModal" >
-                    Apply Reimburse
-                </button>
-            </div>
+        <div class="container text-center" ><p style="font-size: 25px; font-style: normal;padding-top: 1%">Reimburse Data</p>
+            <% if (vehicles.isEmpty()) { %>
+            <p>Please Insert Your Vehicle Data Before Apply Your Reimburse</p>
+            <% } %>
+        </div>
+        <div class="container col-sm-10 text-center" style="padding-top: 2%">
+            <!--Trigger/tombol modal insert-->
+            <button type="button" class="btn btn-lg text-white" style="background-color: #be0e0e"  data-toggle="modal" data-target="#applyModal" >
+                Apply Reimburse
+            </button>
 
-        
+        </div>
+
+
         <br>
 
-         <div class="container col-sm-10" style="padding-left:8%; padding-top: 2%  ">
+        <div class="container col-sm-10" style=" padding-top: 2%  ">
 
             <table id="d_table" class="table table-striped">
                 <thead class="thead-dark">
@@ -161,9 +166,9 @@
                                                         <tr>
                                                             <td>Vehicle</td>
                                                             <td><select name="vehicle"   id="vehicle" class="custom-select">
-                                                                    <option selected value="<%=t.getVehicle().getId()%>"><%=t.getVehicle().getVehicleType()+" "+t.getVehicle().getId()%></option>
+                                                                    <option selected value="<%=t.getVehicle().getId()%>"><%=t.getVehicle().getVehicleType() + " " + t.getVehicle().getId()%></option>
                                                                     <%for (Vehicle v : vehicles) {%>
-                                                                    <option value="<%=v.getId()%>"><%=v.getVehicleType()+" "+v.getId()%></option>
+                                                                    <option value="<%=v.getId()%>"><%=v.getVehicleType() + " " + v.getId()%></option>
                                                                     <% }%>
                                                                 </select></td>
                                                         </tr>
@@ -285,19 +290,21 @@
         </script>
 
 
-          <!-- Footer -->
-  <footer class="fixed-bottom py-5 bg-dark "style="padding-top: 0rem!important; padding-bottom: 1rem!important">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &team; Reimbursement 2020</p>
-    </div>
-    <!-- /.container -->
-  </footer>
+        <!-- Footer -->
+        <footer class="fixed-bottom py-5 bg-dark "style="padding-top: 0rem!important; padding-bottom: 1rem!important">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &team; Reimbursement 2020</p>
+            </div>
+            <!-- /.container -->
+        </footer>
 
 
     </body>
 
     <% }
-        session.removeAttribute("employee");
+        session.removeAttribute("parklots");
+        session.removeAttribute("vehicles");
+        session.removeAttribute("reimburses");
 
     %>
 

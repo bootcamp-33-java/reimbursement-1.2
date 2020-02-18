@@ -8,6 +8,7 @@ package controllers;
 import daos.GeneralDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.RequestDispatcher;
@@ -16,17 +17,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Reimburse;
+import models.HistoryStatus;
 import tools.HibernateUtil;
 
 /**
  *
  * @author yuyun
  */
-@WebServlet(name = "ManagerServlet", urlPatterns = {"/manager"})
-public class ManagerServlet extends HttpServlet {
-
-            private GeneralDAO<Reimburse> rdao = new GeneralDAO(HibernateUtil.getSessionFactory(), Reimburse.class);
+@WebServlet(name = "HistoryServlet", urlPatterns = {"/history"})
+public class HistoryServlet extends HttpServlet {
+    
+    private GeneralDAO<HistoryStatus> hdao = new GeneralDAO(HibernateUtil.getSessionFactory(), HistoryStatus.class);
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,9 +42,10 @@ public class ManagerServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-             List<Reimburse> approvemsfc = rdao.getAll().stream().filter(h->h.getCurrentStatus().getId()==6).collect(Collectors.toList());
-            request.getSession().setAttribute("msfcs", approvemsfc);
-            RequestDispatcher rd = request.getRequestDispatcher("manager.jsp");
+            
+            List<HistoryStatus> historys = hdao.getAll().stream().sorted(Comparator.comparing(HistoryStatus::getId).reversed()).collect(Collectors.toList());
+            request.getSession().setAttribute("histories", historys);
+            RequestDispatcher rd = request.getRequestDispatcher("history.jsp");
             rd.include(request, response);
         }
     }

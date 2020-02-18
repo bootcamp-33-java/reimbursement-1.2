@@ -9,6 +9,7 @@ import daos.EmployeeDAO;
 import daos.GeneralDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,13 +41,13 @@ public class accountServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            request.setAttribute("accounts", "");
             if (isTrue) {
-                response.sendRedirect("reimburse.jsp");
+                response.sendRedirect("index.jsp");
             } else {
                 response.sendRedirect("login.jsp");
             }
@@ -65,11 +66,18 @@ public class accountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id1 = request.getParameter("id");
-//        String pass2 = request.getParameter("pass2");
+        if (request.getParameter("token") != null) {
+            String token = request.getParameter("token");
+            List<Account> acount = adao.getData(token);
+            if (!acount.isEmpty()) {
+                for (Account act : acount) {
+                    act.setIsVerify(true);
+                    adao.saveOrDelete(act, false);
+                }
 
-        Account account = new Account(id1);
-        adao.saveOrDelete(account, false);
+            }
+
+        }
         processRequest(request, response);
     }
 
@@ -89,9 +97,12 @@ public class accountServlet extends HttpServlet {
 
         Employee employee = edao.getByEmail(username);
         if (employee != null && BCrypt.checkpw(password, employee.getAccount().getPassword())) {
-            isTrue = true;
+            if (employee.getAccount().getIsVerify() && employee.getIsActive()) {
+                isTrue = true;
+
+            }
         }
-        
+
         processRequest(request, response);
 
     }

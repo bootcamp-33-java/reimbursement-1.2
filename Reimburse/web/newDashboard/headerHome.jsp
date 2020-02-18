@@ -4,37 +4,7 @@
     Author     : FIKRI-PC
 --%>
 
- <!-- Navigation -->
- 
-<!--  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <a href="home.jsp" class="logo-wrapper waves-effect">
-            <img src="dist/iniParking.png"  class="img-fluid" style="width:15%;height:8%" alt="">
-        </a>
-    <div class="container">
-      
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="homepage.jsp">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="vehicle.jsp">Vehicle Data</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="pic.jsp">PIC Approval</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="manager.jsp">MSFC Approval</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>-->
+
 <!-- Sidebar -->
 <div class="container"  ></div>
 
@@ -103,11 +73,14 @@
             <a  href="pic.jsp">PIC</a>
             <a  href="manager.jsp">MSFC</a>
             <a  href="history.jsp">History</a>
+<!--            <a  href="role.jsp">Role</a>
+            <a  href="site.jsp">Site</a>
+            <a  href="status.jsp">Status</a>-->
         </div>
 
         <div id="main">
 
-            <span style="font-size: 20px;cursor:pointer; color: #62d542" onclick="openNav()"> &#9776;</span>
+            <span style="font-size: 20px;cursor:pointer; color: whitesmoke" onclick="openNav()"> &#9776;</span>
         </div>
 
         <script>

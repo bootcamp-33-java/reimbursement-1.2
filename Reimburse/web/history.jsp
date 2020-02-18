@@ -4,6 +4,7 @@
     Author     : FIKRI-PC
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="models.Status"%>
 <%@page import="models.HistoryStatus"%>
 <%@page import="models.Reimburse"%>
@@ -12,7 +13,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Bootstrap CSS CDN -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
         <!-- Our Custom CSS -->
@@ -41,36 +42,37 @@
         <title>JSP Page</title>
     </head>
 
-    <% if (session.getAttribute("histories") == null || session.getAttribute("statuses") == null || session.getAttribute("reimburses") == null) {
+    <% if (session.getAttribute("histories") == null) {
             response.sendRedirect("history");
 
         } else {
             List<HistoryStatus> historyStatuses = (List<HistoryStatus>) session.getAttribute("histories");
-            List<Status> statusees = (List<Status>) session.getAttribute("statuses");
-            List<Reimburse> reimbursees = (List<Reimburse>) session.getAttribute("reimburses");
-            HistoryStatus historyStatus = (HistoryStatus) session.getAttribute("history");
+   
     %>
 
 
 
     <body>        
-          <header>
+        <header>
             <%@include file="/newDashboard/headerHome.jsp" %>
         </header>
+         <br>
         <br>
         <br>
         <br>
-        <div class="container col-sm-10" style="padding-left:8%; padding-top: 2%  ">
+        <!--FORM SEARCH-->
+        <div class="container text-center" style="font-size: 25px; font-style: normal;padding-top: 1%;padding-bottom: 10px"><p>Track Your History Reimburse</p></div>
+        
+        <div class="container col-sm-10" style="padding-top: 2%  ">
 
             <table id="d_table" class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
                         <th>NO</th>
-                        <th>ID</th>
-                        <th>REIMBURSE ID</th>
-                        <th>NOTES</th>
+                        <th>PERIOD</th>
                         <th>DATE</th>
-                        <th>ACTION</th>
+                        <th>STATUS</th>
+                        <th>NOTES</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -78,10 +80,17 @@
                         for (HistoryStatus h : historyStatuses) {%>
                     <tr>
                         <td><%= i++%></td>
-                        <td><%= h.getId()%></td>
-                        <td><%= h.getReimburse()%></td>
-                        <td><%= h.getNotes()%></td>
-                        <td><%= h.getHistoryDate()%></td>
+                        <td><%= h.getReimburse().getPeriod() %></td>
+                        <%try {
+                                SimpleDateFormat simple = new SimpleDateFormat("dd MMMM yyyy | HH:mm:ss");%>
+                        <td><%= simple.format(h.getHistoryDate())%></td>
+                        <%
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        %>
+                        <td><%= h.getStatus().getName() %></td>
+                        <td><%= h.getNotes()==null? "nothing for now":h.getNotes() %></td>
 
                     </tr>
                     <% }%>
@@ -99,19 +108,19 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
         <!-- script sidebar -->
 
-          <!-- Footer -->
-  <footer class="fixed-bottom py-5 bg-dark "style="padding-top: 0rem!important; padding-bottom: 1rem!important">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &team; Reimbursement 2020</p>
-    </div>
-    <!-- /.container -->
-  </footer>
+        <!-- Footer -->
+        <footer class="fixed-bottom py-5 bg-dark "style="padding-top: 0rem!important; padding-bottom: 1rem!important">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &team; Reimbursement 2020</p>
+            </div>
+            <!-- /.container -->
+        </footer>
 
 
     </body>
 
     <% }
-        session.removeAttribute("history");
+        session.removeAttribute("histories");
 
     %>
 

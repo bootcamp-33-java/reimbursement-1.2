@@ -4,6 +4,7 @@
     Author     : Insane
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="models.Employee"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -55,23 +56,18 @@
         <header>
             <%@include file="/newDashboard/headerHome.jsp" %>
         </header>
+     <br>
         <br>
         <br>
-        <br>
-        
-        <div class="container text-center" style="font-size: 25px; font-style: normal;padding-top: 2%"><p>Register</p></div>
-        <div class="container col-sm-10" style="padding-left:556px; padding-top: 2%">
-            <form action="register" method="GET" class="form-inline">
-                <div class="form-group">
-                    <!--Trigger/tombol modal insert-->
-                    <button type="button" class="btn btn-lg text-white" style="background-color: #be0e0e"  data-toggle="modal" data-target="#exampleModal" >
-                        Insert Data
-                    </button>
-                </div>
-            </form>
-        </div>
         <br>
 
+        <div class="container text-center" style="font-size: 25px; font-style: normal;padding-top: 1%"><p>Employee Data</p></div>
+        <div class="container col-sm-10 text-center" style=" padding-top: 2%">
+            <!--Trigger/tombol moedal insert-->
+            <button type="button" class="btn btn-lg text-white" style="background-color: #be0e0e"  data-toggle="modal" data-target="#insertModal" >
+                Insert Data 
+            </button>
+        </div>
         <div class="container col-sm-10" style="padding-left:8%; padding-top: 2%  ">
 
             <table  id="d_table" class="table table-hover">
@@ -97,26 +93,24 @@
                         <td><%= e.getEmail()%></td>
                         <td><%= e.getIsActive()%></td>
                         <td><%= e.getPhoneNumber()%></td>
-                        <td><%= e.getHireDate()%></td>
+                       <%try {
+                                SimpleDateFormat simple = new SimpleDateFormat("dd MMMM yyyy");%>
+                        <td><%= simple.format(e.getHireDate())%></td>
+                        <%
+                            } catch (Exception n) {
+                                n.printStackTrace();
+                            }
+                        %>
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal<%
                                 out.print(e.getId());
-                                out.print(e.getName());
-                                out.print(e.getEmail());
-                                out.print(e.getIsActive());
-                                out.print(e.getPhoneNumber());
-                                out.print(e.getHireDate());
+                          
                                     %>"><i class="fas fa-edit"></i></button>
                             <a href="register?action=delete&id=<%=e.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
 
                             <form action="register" method="POST">
                                 <div class="modal fade" id="updateModal<%
                                     out.print(e.getId());
-                                    out.print(e.getName());
-                                    out.print(e.getEmail());
-                                    out.print(e.getIsActive());
-                                    out.print(e.getPhoneNumber());
-                                    out.print(e.getHireDate());
 
 
                                      %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

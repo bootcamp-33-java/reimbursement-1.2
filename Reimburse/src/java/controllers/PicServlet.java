@@ -5,20 +5,28 @@
  */
 package controllers;
 
+import daos.GeneralDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
+import java.util.stream.Collectors;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Reimburse;
+import tools.HibernateUtil;
 
 /**
  *
  * @author yuyun
  */
-@WebServlet(name = "PicServlet", urlPatterns = {"/PicServlet"})
+@WebServlet(name = "PicServlet", urlPatterns = {"/pic"})
 public class PicServlet extends HttpServlet {
+
+        private GeneralDAO<Reimburse> rdao = new GeneralDAO(HibernateUtil.getSessionFactory(), Reimburse.class);
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,16 +41,10 @@ public class PicServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet PicServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet PicServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            List<Reimburse> approvepics = rdao.getAll().stream().filter(h->h.getCurrentStatus().getId()==5).collect(Collectors.toList());
+            request.getSession().setAttribute("pics", approvepics);
+            RequestDispatcher rd = request.getRequestDispatcher("pic.jsp");
+            rd.include(request, response);
         }
     }
 

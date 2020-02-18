@@ -48,13 +48,12 @@
         <div class="sub-form text-center">
           <div class="row">
             <div class="col-md-5 center-block col-sm-8 col-xs-11">
-              <form role="form" id="mc-form" action="http://csmthemes.us3.list-manage.com/subscribe/post-json?u=9666c25a337f497687875a388&amp;id=5b881a50fb&amp;c=?">
-                <div class="input-group">
+             
                   
                   <span class="input-group-btn">
-                      <a href="reimburse.jsp"><button type="submit" class="btn btn-default" id="mc-subscribe" value="Subscribe" name="subscribe">Reimburse Now<i class="fa fa-paper-plane"></i></button></a>
+                      <a href="reimburse.jsp"><button  class="btn btn-default"   name="subscribe">Reimburse Now<i class="fa fa-paper-plane"></i></button></a>
                   </span> </div>
-              </form>
+          
               <p id="mc-notification"></p>
             </div>
           </div>
@@ -98,7 +97,7 @@
           <div class="col-md-2 col-sm-2 col-xs-2 text-center"><i class="fa fa-bicycle fa-3x"></i></div>
           <div class="col-md-10 col-sm-10 col-xs-10"> 
             <!--features 3-->
-            <h4>Reimburse Bicycle</h4>
+            <h4>Reimburse Motorcycle</h4>
             <p>Sepeda motor adalah kendaraan beroda dua[1] yang digerakkan oleh sebuah mesin. Letak kedua roda sebaris lurus dan pada kecepatan tinggi sepeda motor tetap stabil disebabkan oleh gaya giroskopik. Sedangkan pada kecepatan rendah, kestabilan atau keseimbangan sepeda motor bergantung kepada pengaturan setang oleh pengendara.</p>
             <!--features 3 end--> 
           </div>
