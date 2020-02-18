@@ -46,7 +46,7 @@ public class Reimburse implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "ID")
-    private Integer id;
+    private String id;
     
     @Basic(optional = false)
     @Column(name = "START_DATE")
@@ -86,11 +86,11 @@ public class Reimburse implements Serializable {
     public Reimburse() {
     }
 
-    public Reimburse(Integer id) {
+    public Reimburse(String id) {
         this.id = id;
     }
 
-    public Reimburse(Integer id, Date startDate, Date endDate, long total, String period, Employee employee, Status currentStatus) {
+    public Reimburse(String id, Date startDate, Date endDate, long total, String period, Employee employee, Status currentStatus) {
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -102,11 +102,11 @@ public class Reimburse implements Serializable {
 
   
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

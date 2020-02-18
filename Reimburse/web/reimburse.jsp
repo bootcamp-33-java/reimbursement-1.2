@@ -139,7 +139,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Date</td>
-                                                            <td><input type="datetime" name="date" value="<% out.print(t.getUploadDate()); %>" /></td>
+                                                            <td><input type="text" name="date" value="<% out.print(t.getUploadDate()); %>" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Ticket Photo</td>

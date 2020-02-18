@@ -92,7 +92,6 @@ public class accountServlet extends HttpServlet {
             isTrue = true;
         }
         
-        request.setAttribute("idUser", employee);
         processRequest(request, response);
 
     }

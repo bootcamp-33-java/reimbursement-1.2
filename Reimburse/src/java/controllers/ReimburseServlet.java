@@ -8,10 +8,9 @@ package controllers;
 import daos.GeneralDAO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
+import java.io.File;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
@@ -31,7 +30,6 @@ import models.Reimburse;
 import models.Status;
 import models.Ticket;
 import models.Vehicle;
-import org.apache.commons.io.IOUtils;
 import tools.HibernateUtil;
 
 /**
@@ -46,6 +44,9 @@ import tools.HibernateUtil;
 public class ReimburseServlet extends HttpServlet {
 
     private String d;
+    
+    private String id;
+            
     private GeneralDAO<ParkingLot> pldao = new GeneralDAO(HibernateUtil.getSessionFactory(), ParkingLot.class);
 
     private GeneralDAO<Ticket> tdao = new GeneralDAO(HibernateUtil.getSessionFactory(), Ticket.class);
@@ -125,8 +126,15 @@ public class ReimburseServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String date = request.getParameter("date");
-
+        
+        int n = 10;
+        String tokenn = ReimburseServlet.getAlphaNumericString(n);
         Part filePart = request.getPart("photo");
+        String fileName=filePart.getSubmittedFileName();
+       
+        String savePath = "D:\\Bootcamp Mii\\JSP\\reimbursement-1.2\\Reimburse\\web\\images\\"+File.separator+tokenn+fileName;
+        filePart.write(savePath+File.separator);
+       
 
         String price = request.getParameter("price");
 
@@ -140,24 +148,23 @@ public class ReimburseServlet extends HttpServlet {
         try {
             SimpleDateFormat frmt = new SimpleDateFormat("MMMM yyyy");
             d = frmt.format(dt);
+            SimpleDateFormat formt=new SimpleDateFormat("MMyyyy");
+            id=formt.format(dt);
         } catch (Exception e) {
         }
 
-//            Employee empl = (Employee) request.getAttribute("idUser");
-        List<Reimburse> reim = redao.getData(d);
+        String idn="11"+id;
+        List<Reimburse> reim = redao.getData(idn);
         if (reim.isEmpty()) {
-            Reimburse reimb = new Reimburse(0, dt, dt, new Long(0), d, new Employee("11"), new Status(5));
+            Reimburse reimb = new Reimburse(idn, dt, dt, new Long(0), d, new Employee("11"), new Status(5));
             redao.saveOrDelete(reimb, false);
         }
-        List<Reimburse> reimbur = redao.getData(d);
 
         //insert to ticket
-        BufferedImage image = ImageIO.read(filePart.getInputStream());
-        for (Reimburse r : reimbur) {
-            Ticket t = new Ticket(0, dt, "yyyy", new Long(price), new ParkingLot(parking), new Reimburse(r.getId()), 
+            Ticket t = new Ticket(0, dt, savePath, new Long(price), new ParkingLot(parking), new Reimburse(idn), 
                     new Vehicle(vehicle));
             tdao.saveOrDelete(t, false);
-        }
+        
 
         processRequest(request, response);
     }
@@ -171,5 +178,43 @@ public class ReimburseServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    private String extractFileName(Part filePart) {
+        String contentDisp = filePart.getHeader("content-diposition");
+        String[] items = contentDisp.split(";");
+        for (String s : items) {
+            if (s.trim().startsWith("filename")) {
+                return s.substring(s.indexOf("=") + 2, s.length() - 1);
+
+            }
+        }
+        return "";
+    }
+    
+    static String getAlphaNumericString(int n) {
+
+        // chose a Character random from this String 
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        // create StringBuffer size of AlphaNumericString 
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between 
+            // 0 to AlphaNumericString variable length 
+            int index
+                    = (int) (AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb 
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
+    }
 
 }

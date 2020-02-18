@@ -6,14 +6,17 @@ package controllers;
  * and open the template in the editor.
  */
 import daos.GeneralDAO;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import models.Employee;
 import models.Vehicle;
 import tools.HibernateUtil;
@@ -23,6 +26,11 @@ import tools.HibernateUtil;
  * @author HENSTECH
  */
 @WebServlet(urlPatterns = {"/vehicle"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024,
+        maxFileSize = 1024 * 1024 * 5,
+        maxRequestSize = 1024 * 1024 * 5 * 5)
+
+
 public class VehicleServlet extends HttpServlet {
 
     private GeneralDAO<Vehicle> vdao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Vehicle.class);
@@ -41,11 +49,9 @@ public class VehicleServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            Employee empl = (Employee) request.getAttribute("idUser");
-            
-            request.getSession().setAttribute("vehicles", vdao.getData(empl.getId()));
-            
+
+            request.getSession().setAttribute("vehicles", vdao.getAll());
+
             RequestDispatcher rd = request.getRequestDispatcher("vehicle.jsp");
             rd.include(request, response);
 
@@ -66,17 +72,17 @@ public class VehicleServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         PrintWriter out = response.getWriter();
-        
+
         if (request.getParameter("action") != null && request.getParameter("id") != null) {
             if (request.getParameter("action").equals("delete")) {
-                
+
                 vdao.saveOrDelete(new Vehicle(request.getParameter("id")), true);
-                
+
             } else if (request.getParameter("action").equals("update")) {
-                
+
                 Vehicle vehicle = vdao.getById(request.getParameter("id"));
-                request.getSession().setAttribute("vehicles", vehicle);
-                
+                request.getSession().setAttribute("vehiclees", vehicle);
+
             }
         }
         processRequest(request, response);
@@ -94,19 +100,23 @@ public class VehicleServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String id = request.getParameter("id");
-        
+
         String owner = request.getParameter("owner");
-        
-        String stnk = request.getParameter("stnk");
-        
+
+        Part filePart = request.getPart("stnk");
+
         String type = request.getParameter("type");
-        
-        String nik = request.getParameter("nik");
-        
+
+        String fileName=filePart.getSubmittedFileName();
+
+        String tokenn = VehicleServlet.getAlphaNumericString(7);
+
+        String savePath = "D:\\Bootcamp Mii\\JSP\\reimbursement-1.2\\Reimburse\\web\\images\\"+File.separator+tokenn+fileName;
+        filePart.write(savePath+File.separator);
+
         PrintWriter out = response.getWriter();
 
-        Employee employee = (Employee) request.getAttribute("idUser");
-        if (id != null && owner != null && stnk != null && type != null && nik != null) {
+        if (id != null && owner != null && filePart.getContentType() != null && type != null) {
 
             out.println("<script src= 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.11.4/sweetalert2.all.js'> </script>");
             out.println("<script src= 'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>");
@@ -115,19 +125,19 @@ public class VehicleServlet extends HttpServlet {
             out.println("$(document).ready(function(){");
 
             if (id.matches("[0-9]+")) {
-                
+
                 out.println("swal ('Gagal !', 'Data gagal disimpan1', 'error');");
-                
+
             } else if (id.matches("[A-z]+")) {
-                
+
                 out.println("swal ('Gagal !', 'Data gagal disimpan2', 'error');");
-                
-            } else if (vdao.saveOrDelete(new Vehicle(id, owner, stnk, type, new Employee(employee.getId())), false)) {
-                
+//                public Vehicle(String id, String stnkOwner, String photoStnk, String vehicleType, Employee employee) {
+            } else if (vdao.saveOrDelete(new Vehicle(id, owner, savePath, type, new Employee("11")), false)) {
+
                 out.println("swal ('Sukses !', 'Data berhasil disimpan', 'success');");
-                
+
             }
-            
+
             out.println("});");
             out.println("</script>");
         }
@@ -146,4 +156,29 @@ public class VehicleServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    static String getAlphaNumericString(int n) {
+
+        // chose a Character random from this String 
+        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                + "0123456789"
+                + "abcdefghijklmnopqrstuvxyz";
+
+        // create StringBuffer size of AlphaNumericString 
+        StringBuilder sb = new StringBuilder(n);
+
+        for (int i = 0; i < n; i++) {
+
+            // generate a random number between 
+            // 0 to AlphaNumericString variable length 
+            int index
+                    = (int) (AlphaNumericString.length()
+                    * Math.random());
+
+            // add Character one by one in end of sb 
+            sb.append(AlphaNumericString
+                    .charAt(index));
+        }
+
+        return sb.toString();
+    }
 }

@@ -145,7 +145,7 @@
                     <% }%>
                 </tbody>
             </table>
-            <form action="vehicle" method="POST" enctype="multipart/form-data">
+            <form action="vehicle" method="POST">
 
                 <!--Membuat class MODAL INSERT-->
                 <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -176,7 +176,7 @@
                                         <tr>
                                             <td>PHOTO STNK</td>
                                             <td>
-                                                <input type = "file" name = "stnk" />
+                                                <input type = "file" name = "stnk" size = "50" />
                                                 <br>
 
                                             </td>
