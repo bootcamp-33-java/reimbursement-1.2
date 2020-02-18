@@ -71,7 +71,7 @@ public class ReimburseServlet extends HttpServlet {
             Employee empl = (Employee) request.getAttribute("idUser");
 
             request.getSession().setAttribute("parklots", pldao.getData(null));
-            request.getSession().setAttribute("vehicles", vdao.getData(11));
+            request.getSession().setAttribute("vehicles", vdao.getData(null));
             request.getSession().setAttribute("reimburses", tdao.getAll());
             RequestDispatcher rd = request.getRequestDispatcher("reimburse.jsp");
             rd.include(request, response);
@@ -100,7 +100,7 @@ public class ReimburseServlet extends HttpServlet {
      * @param type
      * @param request servlet request
      * @param response servlet response
-     * @return 
+     * @return
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
