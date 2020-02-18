@@ -50,21 +50,22 @@
 
 
     <body>        
-
+        <%@include file="/newDashboard/headerHome.jsp" %>
         <br>
         <br>
         <br>
         <br>
 
-        <div class="container col-sm-10">
+        <div class="container text-center" style="font-size: 25px; font-style: normal;padding-top: 1%"><p>Vehicle Data</p></div>
+        <div class="container col-sm-10" style="padding-left:562px; padding-top: 2%">
             <!--Trigger/tombol moedal insert-->
-            <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#insertModal" >
+            <button type="button" class="btn btn-lg text-white" style="background-color: #be0e0e"  data-toggle="modal" data-target="#insertModal" >
                 Insert Data
             </button>
         </div>
-        <br>
+        
 
-        <div class="container col-sm-10">
+        <div class="container col-sm-10" style="padding-left:8%; padding-top: 2%  ">
 
             <table id="d_table" class="table table-striped">
                 <thead class="thead-dark">
@@ -231,11 +232,13 @@
                     });
                 </script>-->
 
-        <footer id="footer" class="footer">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="https://www.instagram.com/agungld_/?hl=dongaagung_"> AgungLD</a>
-            </div>
-        </footer>
+          <!-- Footer -->
+  <footer class="fixed-bottom py-5 bg-dark "style="padding-top: 0rem!important; padding-bottom: 1rem!important">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &team; Reimbursement 2020</p>
+    </div>
+    <!-- /.container -->
+  </footer>
 
 
     </body>

@@ -12,7 +12,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Bootstrap CSS CDN -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
         <!-- Our Custom CSS -->
@@ -54,9 +54,13 @@
 
 
     <body>        
-
-
-        <div class="container col-sm-10">
+          <header>
+            <%@include file="/newDashboard/headerHome.jsp" %>
+        </header>
+        <br>
+        <br>
+        <br>
+        <div class="container col-sm-10" style="padding-left:8%; padding-top: 2%  ">
 
             <table id="d_table" class="table table-striped">
                 <thead class="thead-dark">
@@ -95,11 +99,13 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
         <!-- script sidebar -->
 
-        <footer id="footer" class="footer">
-            <div class="footer-copyright text-center py-3">© 2020 Copyright:
-                <a href="https://www.instagram.com/agungld_/?hl=dongaagung_"> AgungLD</a>
-            </div>
-        </footer>
+          <!-- Footer -->
+  <footer class="fixed-bottom py-5 bg-dark "style="padding-top: 0rem!important; padding-bottom: 1rem!important">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &team; Reimbursement 2020</p>
+    </div>
+    <!-- /.container -->
+  </footer>
 
 
     </body>

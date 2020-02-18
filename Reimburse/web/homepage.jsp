@@ -27,7 +27,7 @@
 <body>
 
  <%@include file="/newDashboard/headerHome.jsp" %>
- <div style="padding-left: 13%; padding-bottom: 10%">
+ <div style="padding-left: 13%; padding-bottom: 10%; padding-top: 1%">
     <!-- Content section -->
     <section class="py-5" >
     <div class="container">
@@ -48,7 +48,7 @@
   <!-- Footer -->
   <footer class="fixed-bottom py-5 bg-dark "style="padding-top: 0rem!important; padding-bottom: 1rem!important">
     <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2019</p>
+      <p class="m-0 text-center text-white">Copyright &team; Reimbursement 2020</p>
     </div>
     <!-- /.container -->
   </footer>
