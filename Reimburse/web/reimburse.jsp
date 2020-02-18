@@ -111,7 +111,7 @@
                                     %>"><i class="fas fa-edit"></i></button>
                             <a href="reimburse?action=delete&id=<%=t.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
 
-                            <form action="reimburse" method="POST">
+                            <form action="reimburse" method="POST" enctype="multipart/form-data">
                                 <div class="modal fade" id="updateModal<%
                                     out.print(t.getId());
                                      %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -139,7 +139,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td>Date</td>
-                                                            <td><input type="text" name="date" value="<% out.print(t.getUploadDate()); %>" /></td>
+                                                            <td><input type="date" name="date" value="<% out.print(t.getUploadDate()); %>" /></td>
                                                         </tr>
                                                         <tr>
                                                             <td>Ticket Photo</td>

@@ -125,6 +125,7 @@ public class ReimburseServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        
         String date = request.getParameter("date");
         
         int n = 10;
@@ -179,17 +180,6 @@ public class ReimburseServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
     
-    private String extractFileName(Part filePart) {
-        String contentDisp = filePart.getHeader("content-diposition");
-        String[] items = contentDisp.split(";");
-        for (String s : items) {
-            if (s.trim().startsWith("filename")) {
-                return s.substring(s.indexOf("=") + 2, s.length() - 1);
-
-            }
-        }
-        return "";
-    }
     
     static String getAlphaNumericString(int n) {
 

@@ -74,9 +74,7 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>NO</th>
-                            <th>ID Reimburse</th>
-                            <th>NIK</th>
-                            <th>NAME</th>
+                            <th>EMPLOYEE</th>
                             <th>PERIOD</th>
                             <th>TOTAL</th>
                             <th>NOTES</th>
