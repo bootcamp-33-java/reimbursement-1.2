@@ -45,7 +45,6 @@ public class accountServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            request.setAttribute("accounts", "");
             if (isTrue) {
                 response.sendRedirect("index.jsp");
             } else {
@@ -100,6 +99,8 @@ public class accountServlet extends HttpServlet {
             if (employee.getAccount().getIsVerify() && employee.getIsActive()) {
                 isTrue = true;
 
+            }else{
+                isTrue=false;
             }
         }
 

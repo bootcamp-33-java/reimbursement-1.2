@@ -4,6 +4,7 @@
     Author     : Insane
 --%>
 
+<%@page import="models.Role"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="models.Employee"%>
 <%@page import="java.util.List"%>
@@ -11,7 +12,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Bootstrap CSS CDN -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
         <!-- Our Custom CSS -->
@@ -47,7 +48,7 @@
 
         } else {
             List<Employee> employees = (List<Employee>) session.getAttribute("employee");
-//            Employee employee = (Employee) session.getAttribute("register");
+            List<Role> roles = (List<Role>) session.getAttribute("roless");
     %>
 
 
@@ -56,7 +57,7 @@
         <header>
             <%@include file="/newDashboard/headerHome.jsp" %>
         </header>
-     <br>
+        <br>
         <br>
         <br>
         <br>
@@ -64,7 +65,7 @@
         <div class="container text-center" style="font-size: 25px; font-style: normal;padding-top: 1%"><p>Employee Data</p></div>
         <div class="container col-sm-10 text-center" style=" padding-top: 2%">
             <!--Trigger/tombol moedal insert-->
-            <button type="button" class="btn btn-lg text-white" style="background-color: #be0e0e"  data-toggle="modal" data-target="#insertModal" >
+            <button type="button" class="btn btn-lg text-white" style="background-color: #be0e0e"  data-toggle="modal" data-target="#exampleModal" >
                 Insert Data 
             </button>
         </div>
@@ -93,8 +94,8 @@
                         <td><%= e.getEmail()%></td>
                         <td><%= e.getIsActive()%></td>
                         <td><%= e.getPhoneNumber()%></td>
-                       <%try {
-                                SimpleDateFormat simple = new SimpleDateFormat("dd MMMM yyyy");%>
+                        <%try {
+                               SimpleDateFormat simple = new SimpleDateFormat("dd MMMM yyyy");%>
                         <td><%= simple.format(e.getHireDate())%></td>
                         <%
                             } catch (Exception n) {
@@ -104,7 +105,7 @@
                         <td>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#updateModal<%
                                 out.print(e.getId());
-                          
+
                                     %>"><i class="fas fa-edit"></i></button>
                             <a href="register?action=delete&id=<%=e.getId()%>" ><button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></a>
 
@@ -165,63 +166,6 @@
                                 </div>
                             </form>
 
-                            <form action="register" method="POST">
-
-                                <!--Membuat class MODAL INSERT-->
-                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="exampleModalLabel">Insert</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                    <span aria-hidden="true">&times;</span>
-                                                </button>
-                                            </div>
-
-                                            <div class="modal-body">
-
-                                                <!--Isi method Insert Modal-->
-                                                <table border="0" >
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Employee ID</th>
-                                                            <th><input type="text" name="id" value="" /></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Employee Name</td>
-                                                            <td><input type="text" name="employeeName" value="" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Employee Phone Number</td>
-                                                            <td><input type="text" name="employeePhoneNumber" value="" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Employee Hire Date</td>
-                                                            <td><input type="date" name="employeeHireDate" value="" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Employee Email</td>
-                                                            <td><input type="email" name="employeeEmail" value="" /></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Account Password</td>
-                                                            <td><input type="password" name="accountPassword" value="" /></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <!--Button pada modal Insert-->
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-
                         </td>
 
                     </tr>
@@ -229,7 +173,73 @@
                 </tbody>
 
             </table>
+            <form action="register" method="POST">
 
+                <!--Membuat class MODAL INSERT-->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Insert</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <!--Isi method Insert Modal-->
+                                <table border="0" >
+                                    <thead>
+                                        <tr>
+                                            <th>Employee ID</th>
+                                            <th><input class="form-control" type="text" name="id" value="" /></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Employee Name</td>
+                                            <td><input class="form-control"  type="text" name="employeeName" value="" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Employee Phone Number</td>
+                                            <td><input class="form-control"  type="text" name="employeePhoneNumber" value="" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Employee Hire Date</td>
+                                            <td><input class="form-control"  type="date" name="employeeHireDate" value="" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Employee Email</td>
+                                            <td><input class="form-control"  type="email" name="employeeEmail" value="" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Employee Role</td>
+                                            <td>
+                                            <select name="role"   id="role" class="custom-select">
+                                                <option selected>Select Role</option>
+                                                <%for (Role r : roles) {%>
+                                                <option value="<%=r.getId()%>"><%=r.getName() %></option>
+                                                <% }%>
+                                            </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Account Password</td>
+                                            <td><input class="form-control"  type="password" name="accountPassword" value="" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <!--Button pada modal Insert-->
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
 
 
         </div>
@@ -261,19 +271,20 @@
             });
         </script>
 
-          <!-- Footer -->
-  <footer class="fixed-bottom py-5 bg-dark "style="padding-top: 0rem!important; padding-bottom: 1rem!important">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &team; Reimbursement 2020</p>
-    </div>
-    <!-- /.container -->
-  </footer>
+        <!-- Footer -->
+        <footer class="fixed-bottom py-5 bg-dark "style="padding-top: 0rem!important; padding-bottom: 1rem!important">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &team; Reimbursement 2020</p>
+            </div>
+            <!-- /.container -->
+        </footer>
 
 
     </body>
 
     <% }
         session.removeAttribute("employee");
+        session.removeAttribute("roles");
 
     %>
 

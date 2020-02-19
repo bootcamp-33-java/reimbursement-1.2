@@ -1,4 +1,4 @@
-   /*
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Reimburse;
+import models.Status;
 import tools.HibernateUtil;
 
 /**
@@ -26,7 +27,7 @@ import tools.HibernateUtil;
 @WebServlet(name = "PicServlet", urlPatterns = {"/pic"})
 public class PicServlet extends HttpServlet {
 
-        private GeneralDAO<Reimburse> rdao = new GeneralDAO(HibernateUtil.getSessionFactory(), Reimburse.class);
+    private GeneralDAO<Reimburse> rdao = new GeneralDAO(HibernateUtil.getSessionFactory(), Reimburse.class);
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,7 +42,7 @@ public class PicServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            List<Reimburse> approvepics = rdao.getAll().stream().filter(h->h.getCurrentStatus().getId()==5).collect(Collectors.toList());
+            List<Reimburse> approvepics = rdao.getAll().stream().filter(h -> h.getCurrentStatus().getId() == 5).collect(Collectors.toList());
             request.getSession().setAttribute("pics", approvepics);
             RequestDispatcher rd = request.getRequestDispatcher("pic.jsp");
             rd.include(request, response);
@@ -74,6 +75,26 @@ public class PicServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getParameter("action") != null) {
+            if (request.getParameter("action").equals("approved")) {
+                String note = request.getParameter("note");
+                String id = request.getParameter("id");
+                Reimburse reim = rdao.getById(id);
+                reim.setNotes(note);
+                reim.setCurrentStatus(new Status(1));
+                rdao.saveOrDelete(reim, false);
+                reim.setCurrentStatus(new Status(6));
+                rdao.saveOrDelete(reim, false);
+
+            } else if (request.getParameter("action").equals("reject")) {
+                String note = request.getParameter("note");
+                String id = request.getParameter("id");
+                Reimburse reim = rdao.getById(id);
+                reim.setNotes(note);
+                reim.setCurrentStatus(new Status(3));
+                rdao.saveOrDelete(reim, false);
+            }
+        }
         processRequest(request, response);
     }
 

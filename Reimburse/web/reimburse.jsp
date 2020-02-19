@@ -43,7 +43,7 @@
         <title>JSP Page</title>
     </head>
 
-    <% if (session.getAttribute("reimburses") == null || session.getAttribute("vehicles") == null || session.getAttribute("parklots") == null ) {
+    <% if (session.getAttribute("reimburses") == null || session.getAttribute("vehicles") == null || session.getAttribute("parklots") == null) {
             response.sendRedirect("reimburse");
 
         } else {
@@ -193,75 +193,79 @@
                     <% }%>
                 </tbody>
             </table>
-        </div>
+            <form action="reimburse" method="POST" enctype="multipart/form-data">
 
-        <form action="reimburse" method="POST" enctype="multipart/form-data">
+                <!--Membuat class MODAL INSERT-->
+                <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Apply Reimburse</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
 
-            <!--Membuat class MODAL INSERT-->
-            <div class="modal fade" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Apply Reimburse</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                            <div class="modal-body">
 
-                        <div class="modal-body">
+                                <!--Isi method Insert Modal-->
+                                <table border="0" >
+                                    <tbody>
+                                        <tr>
+                                            <td>Nik</td>
+                                            <td><input class="form-control" type="text" name="nik" value="" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Date</td>
+                                            <td><input class="form-control" type="date" name="date" value="" /></td>
+                                        </tr>
 
-                            <!--Isi method Insert Modal-->
-                            <table border="0" >
-                                <tbody>
+                                        <tr>
+                                            <td>Ticket Photo</td>
+                                            <td><input class="form-control" id="customFile" type="file" name="photo" value="" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Price</td>
+                                            <td><input class="form-control" type="text" name="price" value="" /></td>
+                                        </tr>
 
-                                    <tr>
-                                        <td>Date</td>
-                                        <td><input class="form-control" type="date" name="date" value="" /></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Ticket Photo</td>
-                                        <td><input class="form-control" id="customFile" type="file" name="photo" value="" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Price</td>
-                                        <td><input class="form-control" type="text" name="price" value="" /></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Parking Lot</td>
-                                        <td>
-                                            <select name="parking"   id="parking" class="custom-select">
-                                                <option selected>Select Parking Lot</option>
-                                                <%for (ParkingLot p : parklot) {%>
-                                                <option value="<%=p.getId()%>"><%=p.getLocation()%></option>
-                                                <% }%>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Vehicle</td>
-                                        <td>
-                                            <select name="vehicle" id="vehicle"  class="custom-select">
-                                                <option selected>Select Vehicle</option>
-                                                <%for (Vehicle v : vehicles) {%>
-                                                <option value="<%=v.getId()%>"><%=v.getVehicleType() + " " + v.getId()%></option>
-                                                <% }%>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="modal-footer">
-                            <!--Button pada modal Insert-->
-                            <button type="button" class="btn btn-sm text-white" style="background-color: #776969" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-sm text-white" style="background-color: #be0e0e">Save </button>
+                                        <tr>
+                                            <td>Parking Lot</td>
+                                            <td>
+                                                <select name="parking"   id="parking" class="custom-select">
+                                                    <option selected>Select Parking Lot</option>
+                                                    <%for (ParkingLot p : parklot) {%>
+                                                    <option value="<%=p.getId()%>"><%=p.getLocation()%></option>
+                                                    <% }%>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vehicle</td>
+                                            <td>
+                                                <select name="vehicle" id="vehicle"  class="custom-select">
+                                                    <option selected>Select Vehicle</option>
+                                                    <%for (Vehicle v : vehicles) {%>
+                                                    <option value="<%=v.getId()%>"><%=v.getVehicleType() + " " + v.getId()%></option>
+                                                    <% }%>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                <!--Button pada modal Insert-->
+                                <button type="button" class="btn btn-sm text-white" style="background-color: #776969" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-sm text-white" style="background-color: #be0e0e">Save </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+
+
         <!-- script sidebar -->
         <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>

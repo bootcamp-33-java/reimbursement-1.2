@@ -30,7 +30,6 @@ import tools.HibernateUtil;
         maxFileSize = 1024 * 1024 * 5,
         maxRequestSize = 1024 * 1024 * 5 * 5)
 
-
 public class VehicleServlet extends HttpServlet {
 
     private GeneralDAO<Vehicle> vdao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Vehicle.class);
@@ -102,17 +101,18 @@ public class VehicleServlet extends HttpServlet {
         String id = request.getParameter("id");
 
         String owner = request.getParameter("owner");
+        String nik = request.getParameter("nik");
 
         Part filePart = request.getPart("stnk");
 
         String type = request.getParameter("type");
 
-        String fileName=filePart.getSubmittedFileName();
+        String fileName = filePart.getSubmittedFileName();
 
         String tokenn = VehicleServlet.getAlphaNumericString(7);
 
-        String savePath = "D:\\Bootcamp Mii\\JSP\\reimbursement-1.2\\Reimburse\\web\\images\\"+File.separator+tokenn+fileName;
-        filePart.write(savePath+File.separator);
+        String savePath = "D:\\Bootcamp Mii\\JSP\\reimbursement-1.2\\Reimburse\\web\\images\\" + File.separator + tokenn + fileName;
+        filePart.write(savePath + File.separator);
 
         PrintWriter out = response.getWriter();
 
@@ -132,7 +132,7 @@ public class VehicleServlet extends HttpServlet {
 
                 out.println("swal ('Gagal !', 'Data gagal disimpan2', 'error');");
 //                public Vehicle(String id, String stnkOwner, String photoStnk, String vehicleType, Employee employee) {
-            } else if (vdao.saveOrDelete(new Vehicle(id, owner, savePath, type, new Employee("11")), false)) {
+            } else if (vdao.saveOrDelete(new Vehicle(id, owner, savePath, type, new Employee(nik)), false)) {
 
                 out.println("swal ('Sukses !', 'Data berhasil disimpan', 'success');");
 

@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Reimburse;
+import models.Status;
 import tools.HibernateUtil;
 
 /**
@@ -74,6 +75,25 @@ public class ManagerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (request.getParameter("action") != null) {
+            if (request.getParameter("action").equals("approved")) {
+                String note = request.getParameter("note");
+                String id = request.getParameter("id");
+                Reimburse reim = rdao.getById(id);
+                reim.setNotes(note);
+                reim.setCurrentStatus(new Status(2));
+                rdao.saveOrDelete(reim, false);
+                
+
+            } else if (request.getParameter("action").equals("reject")) {
+                String note = request.getParameter("note");
+                String id = request.getParameter("id");
+                Reimburse reim = rdao.getById(id);
+                reim.setNotes(note);
+                reim.setCurrentStatus(new Status(4));
+                rdao.saveOrDelete(reim, false);
+            }
+        }
         processRequest(request, response);
     }
 

@@ -138,6 +138,7 @@ public class ReimburseServlet extends HttpServlet {
        
 
         String price = request.getParameter("price");
+        String nik = request.getParameter("nik");
 
         String parking = request.getParameter("parking");
 
@@ -157,7 +158,7 @@ public class ReimburseServlet extends HttpServlet {
         String idn="11"+id;
         List<Reimburse> reim = redao.getData(idn);
         if (reim.isEmpty()) {
-            Reimburse reimb = new Reimburse(idn, dt, dt, new Long(0), d, new Employee("11"), new Status(5));
+            Reimburse reimb = new Reimburse(idn, dt, dt, new Long(0), d, new Employee(nik), new Status(5));
             redao.saveOrDelete(reimb, false);
         }
 

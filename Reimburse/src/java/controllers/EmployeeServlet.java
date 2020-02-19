@@ -20,6 +20,8 @@ import models.Employee;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Account;
+import models.EmployeeRole;
+import models.Role;
 import org.mindrot.jbcrypt.BCrypt;
 import tools.HibernateUtil;
 
@@ -32,6 +34,8 @@ public class EmployeeServlet extends HttpServlet {
 
     private GeneralDAO<Employee> edao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Employee.class);
     private GeneralDAO<Account> adao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Account.class);
+    private GeneralDAO<Role> rodao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), Role.class);
+    private GeneralDAO<EmployeeRole> erdao = new GeneralDAO<>(HibernateUtil.getSessionFactory(), EmployeeRole.class);
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,6 +52,7 @@ public class EmployeeServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
 
             request.getSession().setAttribute("employee", edao.getAll());
+            request.getSession().setAttribute("roless", rodao.getAll());
             RequestDispatcher rd = request.getRequestDispatcher("register.jsp");
             rd.include(request, response);
 
@@ -122,6 +127,7 @@ public class EmployeeServlet extends HttpServlet {
         String phoneNumber = request.getParameter("employeePhoneNumber");
         String hireDate = request.getParameter("employeeHireDate");
         String password = request.getParameter("accountPassword");
+        String role = request.getParameter("role");
         try{
         int n = 60;
 
@@ -140,12 +146,13 @@ public class EmployeeServlet extends HttpServlet {
             if (!id.matches("[0-9]+")) {
                 out.println("swal ('Gagal !', 'Data gagal disimpan', 'error');");
             } else if (edao.saveOrDelete(new Employee(id, name, email, true, Date.valueOf(hireDate), phoneNumber), false)) {
+                
                 adao.saveOrDelete(new Account(id, pass, tokenn, false, new Employee(id)), false);
-        JavaMailUtil.sendMail(name,email, "http://localhost:8084/Reimburse/login?token=" +tokenn);
+                erdao.saveOrDelete(new EmployeeRole(0, new Employee(id), new Role(role)), false);
+        JavaMailUtil.sendMail(name,password,email, "http://localhost:8084/Reimburse/login?token=" +tokenn);
 
                 out.println("swal ('Sukses !', 'Data berhasil disimpan', 'success');");
             }
-//            public Account(String id, String password, String token, String isVerify, Employee employee) {
             out.println("});");
             out.println("</script>");
         }

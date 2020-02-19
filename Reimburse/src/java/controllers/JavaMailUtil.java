@@ -23,7 +23,7 @@ import javax.mail.internet.MimeMessage;
  */
 public class JavaMailUtil {
 
-    public static void sendMail(String name, String recepient, String tokennya) throws Exception {
+    public static void sendMail(String name, String pass, String recepient, String tokennya) throws Exception {
 
         Properties properties = new Properties();
 
@@ -48,11 +48,13 @@ public class JavaMailUtil {
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recepient));
             message.setSubject("Activication Account");
             message.setContent(""
-                    + "<center><h1>Dear " + name + "</h1>\n"
+                    + "<center><h1>Dear " + name + "</h1>\n<br>"
+                    + "Your Username : " + recepient + "<br>"
+                    + "Your Password : " + pass + "<br>"
                     + "Please Activation Your Account and Klik link bellow: \n <br><br> "
                     + "<a href=\"" + tokennya + "\"><button type=\"button\" class=\"btn btn-success\"  "
                     + "style=\"height: 100px; width: 300px; font-size:40px; background-color: #43dffa; color:white\">"
-                            + "Verify Account</button></a><center>", "text/html");
+                    + "Verify Account</button></a><center>", "text/html");
             Transport.send(message);
         } catch (MessagingException ex) {
             Logger.getLogger(JavaMailUtil.class.getName()).log(Level.SEVERE, null, ex);

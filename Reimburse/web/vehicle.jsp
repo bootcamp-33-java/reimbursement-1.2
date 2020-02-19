@@ -165,6 +165,10 @@
                                 <table border="0" >
                                     <tbody>
                                         <tr>
+                                            <td>NIK</td>
+                                            <td><input class="form-control" type="text" name="nik" value="" /></td>
+                                        </tr>
+                                        <tr>
                                             <th>PLAT NUMBER</th>
                                             <th><input type="text" name="id" value="" /></th>
                                         </tr>

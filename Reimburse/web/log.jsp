@@ -15,7 +15,10 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
         <title>Login</title>
     </head>
- 
+    <% if (session.getAttribute("accounts")==null ) {
+            response.sendRedirect("login");
+
+        } else {%>
     <body>
         <div class="container col-sm-4" style="top: 100px">
             <h2 style="text-align:center">LOGIN</h2>
@@ -39,5 +42,6 @@
             </form>
         </div>
     </body>
-  
+    <%} 
+request.removeAttribute("accounts");%>
 </html>
