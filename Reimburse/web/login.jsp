@@ -32,10 +32,8 @@
                     <div class="valid-feedback">Valid.</div>
                     <div class="invalid-feedback">Please fill out this field </div>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block text-white" style="background: #be0e0e">Login</button>
-                <div class="form-group text-center" style="margin-top :10px">
-                    <label style="text-align: center">Register for an account?</label>
-                </div>
+                <button type="submit" class="btn btn-primary btn-block text-white" style="background: #9c2403">Login</button>
+             
             </form>
         </div>
     </body>
